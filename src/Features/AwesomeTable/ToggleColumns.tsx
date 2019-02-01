@@ -4,9 +4,10 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import uuid from 'uuid';
+import { Col } from './AwesomeTable';
 
 interface Props {
-  cols: string[];
+  cols: Col;
   isColVisible: (col: string) => boolean;
   toggleColumn: (col: string) => void;
 }
@@ -43,10 +44,10 @@ class ToggleColumns extends React.Component<Props, State> {
           open={Boolean(anchorEl)}
           onClose={() => this.toggleModal(null)}
         >
-          {cols.map(col => (
+          {Object.keys(cols).map(col => (
             <MenuItem style={{ paddingLeft: 0 }} key={uuid()} onClick={() => toggleColumn(col)}>
               <Checkbox checked={isColVisible(col)} />
-              {col}
+              {cols[col].title}
             </MenuItem>
           ))}
         </Menu>

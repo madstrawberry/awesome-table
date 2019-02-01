@@ -7,11 +7,11 @@ import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import * as React from 'react';
 import uuid from 'uuid';
 import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
-import { LocalStorage } from './localStorageUtils';
+import { LocalStorage } from '../../localStorageUtils';
 import ToggleColumns from './ToggleColumns';
 
 export interface Col {
-  [key: string]: { id: string; title: JSX.Element | string };
+  [key: string]: { id: string; title: string };
 }
 
 export interface Row {
@@ -88,7 +88,7 @@ class AwesomeTable extends React.Component<Props, State> {
     return (
       <>
         <ToggleColumns
-          cols={Object.keys(cols)}
+          cols={cols}
           isColVisible={col => visibleCols.includes(col)}
           toggleColumn={this.toggleColumn}
         />
@@ -99,7 +99,7 @@ class AwesomeTable extends React.Component<Props, State> {
                 <Checkbox />
               </TableCell>
               {visibleCols.map((name, index) => (
-                <SortableTableCell index={index} key={uuid()}>
+                <SortableTableCell index={index} key={cols[name].id}>
                   {cols[name].title}
                 </SortableTableCell>
               ))}

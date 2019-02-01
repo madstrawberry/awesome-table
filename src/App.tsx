@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import AwesomeTable, { Col, Row } from './AwesomeTable';
+import AwesomeTable, { Col, Row } from './Features/AwesomeTable/AwesomeTable';
 import uuid from 'uuid';
 
 class App extends Component {
@@ -50,15 +50,15 @@ export interface Data {
 export interface AppCol extends Col {
   id: {
     id: string;
-    title: string | JSX.Element;
+    title: string;
   };
   name: {
     id: string;
-    title: string | JSX.Element;
+    title: string;
   };
   description: {
     id: string;
-    title: string | JSX.Element;
+    title: string;
   };
 }
 
