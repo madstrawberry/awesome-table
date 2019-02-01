@@ -1,22 +1,23 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
-import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import uuid from 'uuid';
-import { Col } from './Features/AwesomeTable/AwesomeTable';
+import { Col } from './AwesomeTable';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 interface Props {
   cols: Col;
   isColVisible: (col: string) => boolean;
-  toggleColumn: (col: string) => void;
+  toggleCol: (col: string) => void;
 }
 
 interface State {
   anchorEl: null | HTMLElement;
 }
 
-class ToggleColumns extends React.Component<Props, State> {
+class ColumnToggler extends React.Component<Props, State> {
   state: State = {
     anchorEl: null,
   };
@@ -27,17 +28,17 @@ class ToggleColumns extends React.Component<Props, State> {
 
   public render() {
     const { anchorEl } = this.state;
-    const { cols, toggleColumn, isColVisible } = this.props;
+    const { cols, toggleCol, isColVisible } = this.props;
 
     return (
       <>
-        <Button
+        <IconButton
           aria-owns={anchorEl ? 'toggle-columns' : undefined}
           aria-haspopup="true"
           onClick={e => this.toggleModal(e.currentTarget)}
         >
-          Set columns
-        </Button>
+          <MoreVertIcon />
+        </IconButton>
         <Menu
           id="toggle-columns"
           anchorEl={anchorEl}
@@ -45,8 +46,13 @@ class ToggleColumns extends React.Component<Props, State> {
           onClose={() => this.toggleModal(null)}
         >
           {Object.keys(cols).map(col => (
-            <MenuItem style={{ paddingLeft: 0 }} key={uuid()} onClick={() => toggleColumn(col)}>
-              <Checkbox checked={isColVisible(col)} />
+            <MenuItem
+              style={{ paddingLeft: 0 }}
+              key={uuid()}
+              disabled={cols[col].disableToggle}
+              onClick={() => toggleCol(col)}
+            >
+              <Checkbox checked={isColVisible(col)} disabled={cols[col].disableToggle} />
               {cols[col].title}
             </MenuItem>
           ))}
@@ -56,4 +62,4 @@ class ToggleColumns extends React.Component<Props, State> {
   }
 }
 
-export default ToggleColumns;
+export default ColumnToggler;

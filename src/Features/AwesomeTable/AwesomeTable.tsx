@@ -8,27 +8,28 @@ import * as React from 'react';
 import uuid from 'uuid';
 import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
 import { LocalStorage } from '../../localStorageUtils';
-import ToggleColumns from '../../ToggleColumns';
+import ColumnToggler from './ColumnToggler';
 
 export interface Col {
-  [key: string]: { id: string; title: string };
+  [colName: string]: { id: string; title: string; disableToggle: boolean };
 }
 
 export interface Row {
-  [key: string]: JSX.Element | string;
+  [colName: string]: JSX.Element | string;
 }
 
-export interface ToolbarProps {
-  cols: Col;
-  isColVisible: (col: string) => boolean;
-  toggleColumn: (col: string) => void;
+export interface AwesomeTableRenderProps {
+  // cols: Col;
+  // isColVisible: (col: string) => boolean;
+  // toggleColumn: (col: string) => void;
+  toggleComponent: () => JSX.Element;
 }
 
 interface Props {
   rows: Row[];
   cols: Col;
   name: string;
-  toolbar?: (toolbarProps: ToolbarProps) => JSX.Element;
+  children?: (toolbarProps: AwesomeTableRenderProps) => JSX.Element;
 }
 
 interface State {
@@ -49,57 +50,72 @@ class AwesomeTable extends React.Component<Props, State> {
   id: string;
 
   getInitialVisibleCols = () => {
-    const allColNames = Object.keys(this.props.cols);
+    const initialColNames = Object.keys(this.props.cols);
     const savedVisibleColNames = LocalStorage.getItem<string[]>(this.id);
 
     if (
       !!savedVisibleColNames &&
-      savedVisibleColNames.every(colName => allColNames.includes(colName))
+      savedVisibleColNames.every(colName => initialColNames.includes(colName))
     ) {
       return savedVisibleColNames;
     }
 
-    return allColNames;
+    return initialColNames;
   };
 
   updateOrder = ({ oldIndex, newIndex }: SortEnd) => {
     const { visibleCols } = this.state;
     const updatedVisibleCols = arrayMove(visibleCols, oldIndex, newIndex);
 
-    this.updateVisibleColumns(updatedVisibleCols);
+    this.updateVisibleCols(updatedVisibleCols);
   };
 
-  toggleColumn = (colToRemove: string) => {
+  toggleCol = (colNameToRemove: string) => {
     const { visibleCols } = this.state;
     let updatedVisibleCols;
-    const isToggled = visibleCols.includes(colToRemove);
+    const isToggled = visibleCols.includes(colNameToRemove);
 
     if (!isToggled) {
-      updatedVisibleCols = visibleCols.concat(colToRemove);
+      updatedVisibleCols = visibleCols.concat(colNameToRemove);
     } else {
-      updatedVisibleCols = visibleCols.filter(name => name !== colToRemove);
+      updatedVisibleCols = visibleCols.filter(name => name !== colNameToRemove);
     }
 
-    this.updateVisibleColumns(updatedVisibleCols);
+    this.updateVisibleCols(updatedVisibleCols);
   };
 
-  updateVisibleColumns = (visibleCols: string[]) => {
+  updateVisibleCols = (visibleCols: string[]) => {
     this.setState({ visibleCols });
     LocalStorage.setItem(this.id, visibleCols);
   };
 
+  getToggleComponent = () => {
+    const { cols } = this.props;
+    const { visibleCols } = this.state;
+
+    return (
+      <ColumnToggler
+        cols={cols}
+        isColVisible={col => visibleCols.includes(col)}
+        toggleCol={this.toggleCol}
+      />
+    );
+  };
+
   render() {
     const { visibleCols } = this.state;
-    const { cols, rows, toolbar } = this.props;
+    const { cols, rows, children } = this.props;
+
+    const renderProps = {
+      toggleComponent: this.getToggleComponent,
+      // cols,
+      // isColVisible: col => visibleCols.includes(col),
+      // toggleColumn: this.toggleColumn,
+    };
 
     return (
       <>
-        {!!toolbar &&
-          toolbar({
-            cols,
-            isColVisible: col => visibleCols.includes(col),
-            toggleColumn: this.toggleColumn,
-          })}
+        {!!children && children(renderProps)}
         <Table>
           <TableHead>
             <SortableRow axis="x" onSortEnd={this.updateOrder}>

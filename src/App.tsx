@@ -14,25 +14,25 @@ class App extends Component {
       id: {
         id: uuid(),
         title: 'ID',
+        disableToggle: false,
       },
       name: {
         id: uuid(),
         title: 'Name',
+        disableToggle: true,
       },
       description: {
         id: uuid(),
         title: 'Description',
+        disableToggle: false,
       },
     };
 
     return (
       <div className="App">
-        <AwesomeTable
-          rows={rows}
-          cols={cols}
-          name="cool"
-          toolbar={props => <Toolbar {...props} />}
-        />
+        <AwesomeTable rows={rows} cols={cols} name="cool">
+          {({ toggleComponent }) => <Toolbar toggleComponent={toggleComponent} />}
+        </AwesomeTable>
       </div>
     );
   }
@@ -57,14 +57,17 @@ export interface AppCol extends Col {
   id: {
     id: string;
     title: string;
+    disableToggle: boolean;
   };
   name: {
     id: string;
     title: string;
+    disableToggle: boolean;
   };
   description: {
     id: string;
     title: string;
+    disableToggle: boolean;
   };
 }
 

@@ -1,15 +1,10 @@
 import * as React from 'react';
-import { ToolbarProps } from './Features/AwesomeTable/AwesomeTable';
-import ToggleColumns from './ToggleColumns';
+import { AwesomeTableRenderProps } from './Features/AwesomeTable/AwesomeTable';
 
-interface Props extends ToolbarProps {}
+interface Props extends AwesomeTableRenderProps {}
 
-const Toolbar: React.FunctionComponent<Props> = ({ cols, isColVisible, toggleColumn }) => {
-  return (
-    <div style={{ background: 'pink', borderRadius: 5 }}>
-      <ToggleColumns cols={cols} isColVisible={isColVisible} toggleColumn={toggleColumn} />
-    </div>
-  );
+const Toolbar: React.FunctionComponent<Props> = ({ toggleComponent }) => {
+  return <div style={{ background: 'pink', borderRadius: 5 }}>{toggleComponent()}</div>;
 };
 
 export default Toolbar;
