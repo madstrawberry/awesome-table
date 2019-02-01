@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import AwesomeTable, { Col, Row } from './Features/AwesomeTable/AwesomeTable';
-import uuid from 'uuid';
 import Toolbar from './Toolbar';
 
 class App extends Component {
@@ -12,19 +11,22 @@ class App extends Component {
 
     const cols: AppCol = {
       id: {
-        id: uuid(),
+        id: 'id',
         title: 'ID',
         disableToggle: false,
+        disableSort: false,
       },
       name: {
-        id: uuid(),
+        id: 'name',
         title: 'Name',
         disableToggle: true,
+        disableSort: false,
       },
       description: {
-        id: uuid(),
+        id: 'description',
         title: 'Description',
         disableToggle: false,
+        disableSort: true,
       },
     };
 
@@ -41,7 +43,10 @@ class App extends Component {
 function generateRows(mockData: Data[]): AppRow[] {
   return mockData.map(d => ({
     id: d.id,
-    name: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
+    name: {
+      sortString: d.type,
+      content: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
+    },
     description: d.description,
   }));
 }
@@ -58,23 +63,26 @@ export interface AppCol extends Col {
     id: string;
     title: string;
     disableToggle: boolean;
+    disableSort: boolean;
   };
   name: {
     id: string;
     title: string;
     disableToggle: boolean;
+    disableSort: boolean;
   };
   description: {
     id: string;
     title: string;
     disableToggle: boolean;
+    disableSort: boolean;
   };
 }
 
 export interface AppRow extends Row {
-  id: string | JSX.Element;
-  name: string | JSX.Element;
-  description: string | JSX.Element;
+  id: string | { sortString: string; content: JSX.Element };
+  name: string | { sortString: string; content: JSX.Element };
+  description: string | { sortString: string; content: JSX.Element };
 }
 
 const mockData: Data[] = [

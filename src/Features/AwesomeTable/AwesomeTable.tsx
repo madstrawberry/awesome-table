@@ -11,11 +11,11 @@ import { LocalStorage } from '../../localStorageUtils';
 import ColumnToggler from './ColumnToggler';
 
 export interface Col {
-  [colName: string]: { id: string; title: string; disableToggle: boolean };
+  [colName: string]: { id: string; title: string; disableToggle: boolean; disableSort: boolean };
 }
 
 export interface Row {
-  [colName: string]: JSX.Element | string;
+  [colName: string]: string | { sortString: string; content: JSX.Element };
 }
 
 export interface AwesomeTableRenderProps {
@@ -34,16 +34,18 @@ interface Props {
 
 interface State {
   visibleCols: string[];
+  sortCol: string | undefined;
 }
 
 class AwesomeTable extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.id = `visibleCols-${this.props.name}`;
+    this.id = `visibleCols-${props.name}`;
 
     this.state = {
       visibleCols: this.getInitialVisibleCols(),
+      sortCol: undefined,
     };
   }
 
@@ -102,9 +104,48 @@ class AwesomeTable extends React.Component<Props, State> {
     );
   };
 
+  sortCol = (colName: string) => () => {
+    this.setState({ sortCol: colName });
+  };
+
+  renderCellContent = (val: string | { sortString: string; content: JSX.Element }) => {
+    if (typeof val === 'string') {
+      return val;
+    }
+
+    return val.content;
+  };
+
+  getSortedRows = () => {
+    const { sortCol } = this.state;
+    const { rows } = this.props;
+
+    if (!sortCol) {
+      return rows;
+    }
+
+    const sortedRows = rows.sort((a, b) => {
+      let valueA = a[sortCol];
+      let valueB = b[sortCol];
+
+      valueA = typeof valueA === 'string' ? valueA : valueA.sortString;
+      valueB = typeof valueB === 'string' ? valueB : valueB.sortString;
+
+      if (valueA < valueB) {
+        return -1;
+      }
+      if (valueA > valueB) {
+        return 1;
+      }
+      return 0;
+    });
+
+    return sortedRows;
+  };
+
   render() {
     const { visibleCols } = this.state;
-    const { cols, rows, children } = this.props;
+    const { cols, children } = this.props;
 
     const renderProps = {
       toggleComponent: this.getToggleComponent,
@@ -112,6 +153,8 @@ class AwesomeTable extends React.Component<Props, State> {
       // isColVisible: col => visibleCols.includes(col),
       // toggleColumn: this.toggleColumn,
     };
+
+    const sortedRows = this.getSortedRows();
 
     return (
       <>
@@ -124,19 +167,22 @@ class AwesomeTable extends React.Component<Props, State> {
               </TableCell>
               {visibleCols.map((name, index) => (
                 <SortableTableCell index={index} key={cols[name].id}>
-                  {cols[name].title}
+                  <>
+                    {cols[name].title}
+                    {!cols[name].disableSort && <button onClick={this.sortCol(name)}>Sort</button>}
+                  </>
                 </SortableTableCell>
               ))}
             </SortableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {sortedRows.map(row => (
               <TableRow key={uuid()}>
                 <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
                   <Checkbox />
                 </TableCell>
                 {visibleCols.map(name => (
-                  <TableCell key={uuid()}>{row[name]}</TableCell>
+                  <TableCell key={uuid()}>{this.renderCellContent(row[name])}</TableCell>
                 ))}
               </TableRow>
             ))}
