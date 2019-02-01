@@ -7,23 +7,9 @@ import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import * as React from 'react';
 import uuid from 'uuid';
 import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
-import { LocalStorage } from '../../localStorageUtils';
+import { LocalStorage, ascSort, descSort } from './awesomeTableUtils';
 import ColumnToggler from './ColumnToggler';
-
-export interface Col {
-  [colName: string]: { id: string; title: string; disableToggle: boolean; disableSort: boolean };
-}
-
-export interface Row {
-  [colName: string]: string | { sortString: string; content: JSX.Element };
-}
-
-export interface AwesomeTableRenderProps {
-  // cols: Col;
-  // isColVisible: (col: string) => boolean;
-  // toggleColumn: (col: string) => void;
-  toggleComponent: () => JSX.Element;
-}
+import { AwesomeTableRenderProps, Row, Col, SortCol, RowContent } from './awesomeTableModels';
 
 interface Props {
   rows: Row[];
@@ -34,7 +20,7 @@ interface Props {
 
 interface State {
   visibleCols: string[];
-  sortCol: string | undefined;
+  sortCol: undefined | SortCol;
 }
 
 class AwesomeTable extends React.Component<Props, State> {
@@ -105,10 +91,14 @@ class AwesomeTable extends React.Component<Props, State> {
   };
 
   sortCol = (colName: string) => () => {
-    this.setState({ sortCol: colName });
+    this.setState(({ sortCol }) => {
+      return sortCol
+        ? { sortCol: { name: colName, order: sortCol.order === 'DESC' ? 'ASC' : 'DESC' } }
+        : { sortCol: { name: colName, order: 'ASC' } };
+    });
   };
 
-  renderCellContent = (val: string | { sortString: string; content: JSX.Element }) => {
+  renderCellContent = (val: RowContent) => {
     if (typeof val === 'string') {
       return val;
     }
@@ -124,21 +114,8 @@ class AwesomeTable extends React.Component<Props, State> {
       return rows;
     }
 
-    const sortedRows = rows.sort((a, b) => {
-      let valueA = a[sortCol];
-      let valueB = b[sortCol];
-
-      valueA = typeof valueA === 'string' ? valueA : valueA.sortString;
-      valueB = typeof valueB === 'string' ? valueB : valueB.sortString;
-
-      if (valueA < valueB) {
-        return -1;
-      }
-      if (valueA > valueB) {
-        return 1;
-      }
-      return 0;
-    });
+    const sortedRows =
+      sortCol.order === 'ASC' ? rows.sort(ascSort(sortCol)) : rows.sort(descSort(sortCol));
 
     return sortedRows;
   };
