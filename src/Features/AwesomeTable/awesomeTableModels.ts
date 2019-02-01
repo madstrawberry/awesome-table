@@ -27,9 +27,7 @@ export interface AwesomeTableRenderProps {
   toggleComponent: () => JSX.Element;
 }
 
-export type Order = 'ASC' | 'DESC';
-
 export interface SortCol {
   name: string;
-  order: Order;
+  order: 'ASC' | 'DESC';
 }
