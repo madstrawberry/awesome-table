@@ -10,9 +10,17 @@ import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-so
 import { LocalStorage } from './localStorageUtils';
 import ToggleColumns from './ToggleColumns';
 
+export interface Col {
+  [key: string]: { id: string; title: JSX.Element | string };
+}
+
+export interface Row {
+  [key: string]: JSX.Element | string;
+}
+
 interface Props {
-  rows: object[];
-  cols: object;
+  rows: Row[];
+  cols: Col;
   name: string;
 }
 
@@ -92,13 +100,13 @@ class AwesomeTable extends React.Component<Props, State> {
               </TableCell>
               {visibleCols.map((name, index) => (
                 <SortableTableCell index={index} key={uuid()}>
-                  {(cols as any)[name]}
+                  {cols[name].title}
                 </SortableTableCell>
               ))}
             </SortableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row: any) => (
+            {rows.map(row => (
               <TableRow key={uuid()}>
                 <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
                   <Checkbox />

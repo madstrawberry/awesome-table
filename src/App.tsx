@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import AwesomeTable from './AwesomeTable';
+import AwesomeTable, { Col, Row } from './AwesomeTable';
 import uuid from 'uuid';
 
 class App extends Component {
@@ -9,9 +9,20 @@ class App extends Component {
 
     const rows = generateRows(data);
 
-    const cols: Row = { id: 'ID', name: 'Name', description: 'Description' };
-
-    // const cols2: Row2 = { id: 'ID', name: 'Name', description: 'Description' };
+    const cols: AppCol = {
+      id: {
+        id: uuid(),
+        title: 'ID',
+      },
+      name: {
+        id: uuid(),
+        title: 'Name',
+      },
+      description: {
+        id: uuid(),
+        title: 'Description',
+      },
+    };
 
     return (
       <div className="App">
@@ -21,24 +32,13 @@ class App extends Component {
   }
 }
 
-function generateRows(mockData: Data[]): Row[] {
+function generateRows(mockData: Data[]): AppRow[] {
   return mockData.map(d => ({
     id: d.id,
     name: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
     description: d.description,
   }));
 }
-
-// function generateRows2(mockData: Data[]): Row2[] {
-//   return mockData.map(d => ({
-//     id: {
-//       id: uuid();
-//       title: d.id
-//     },
-//     name: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
-//     description: d.description,
-//   }));
-// }
 
 export interface Data {
   id: string;
@@ -47,7 +47,7 @@ export interface Data {
   description: string;
 }
 
-export interface Row2 {
+export interface AppCol extends Col {
   id: {
     id: string;
     title: string | JSX.Element;
@@ -62,7 +62,7 @@ export interface Row2 {
   };
 }
 
-export interface Row {
+export interface AppRow extends Row {
   id: string | JSX.Element;
   name: string | JSX.Element;
   description: string | JSX.Element;
