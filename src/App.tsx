@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import AwesomeTable, { Col, Row } from './Features/AwesomeTable/AwesomeTable';
 import uuid from 'uuid';
+import Toolbar from './Toolbar';
 
 class App extends Component {
   render() {
@@ -26,7 +27,12 @@ class App extends Component {
 
     return (
       <div className="App">
-        <AwesomeTable rows={rows} cols={cols} name="cool" />
+        <AwesomeTable
+          rows={rows}
+          cols={cols}
+          name="cool"
+          toolbar={props => <Toolbar {...props} />}
+        />
       </div>
     );
   }

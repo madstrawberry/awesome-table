@@ -8,7 +8,7 @@ import * as React from 'react';
 import uuid from 'uuid';
 import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
 import { LocalStorage } from '../../localStorageUtils';
-import ToggleColumns from './ToggleColumns';
+import ToggleColumns from '../../ToggleColumns';
 
 export interface Col {
   [key: string]: { id: string; title: string };
@@ -18,10 +18,17 @@ export interface Row {
   [key: string]: JSX.Element | string;
 }
 
+export interface ToolbarProps {
+  cols: Col;
+  isColVisible: (col: string) => boolean;
+  toggleColumn: (col: string) => void;
+}
+
 interface Props {
   rows: Row[];
   cols: Col;
   name: string;
+  toolbar?: (toolbarProps: ToolbarProps) => JSX.Element;
 }
 
 interface State {
@@ -83,15 +90,16 @@ class AwesomeTable extends React.Component<Props, State> {
 
   render() {
     const { visibleCols } = this.state;
-    const { cols, rows } = this.props;
+    const { cols, rows, toolbar } = this.props;
 
     return (
       <>
-        <ToggleColumns
-          cols={cols}
-          isColVisible={col => visibleCols.includes(col)}
-          toggleColumn={this.toggleColumn}
-        />
+        {!!toolbar &&
+          toolbar({
+            cols,
+            isColVisible: col => visibleCols.includes(col),
+            toggleColumn: this.toggleColumn,
+          })}
         <Table>
           <TableHead>
             <SortableRow axis="x" onSortEnd={this.updateOrder}>

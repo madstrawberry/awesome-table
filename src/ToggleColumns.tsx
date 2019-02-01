@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import uuid from 'uuid';
-import { Col } from './AwesomeTable';
+import { Col } from './Features/AwesomeTable/AwesomeTable';
 
 interface Props {
   cols: Col;
