@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import AwesomeTable, { Col, Row } from './Features/AwesomeTable/AwesomeTable';
+import AwesomeTable from './Features/AwesomeTable/AwesomeTable';
+import { Col, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
 import Toolbar from './Toolbar';
 
 class App extends Component {
@@ -59,37 +60,22 @@ export interface Data {
 }
 
 export interface AppCol extends Col {
-  id: {
-    id: string;
-    title: string;
-    disableToggle: boolean;
-    disableSort: boolean;
-  };
-  name: {
-    id: string;
-    title: string;
-    disableToggle: boolean;
-    disableSort: boolean;
-  };
-  description: {
-    id: string;
-    title: string;
-    disableToggle: boolean;
-    disableSort: boolean;
-  };
+  id: ColContent;
+  name: ColContent;
+  description: ColContent;
 }
 
 export interface AppRow extends Row {
-  id: string | { sortString: string; content: JSX.Element };
-  name: string | { sortString: string; content: JSX.Element };
-  description: string | { sortString: string; content: JSX.Element };
+  id: RowContent;
+  name: RowContent;
+  description: RowContent;
 }
 
 const mockData: Data[] = [
-  { id: '1', type: 'Prod', title: 'Hoi', description: 'boo' },
-  { id: '2', type: 'Subsc', title: 'Hoi2', description: 'boo2' },
-  { id: '3', type: 'Prod', title: 'Hoi3', description: 'boo3' },
-  { id: '4', type: 'Subsc', title: 'Hoi4', description: 'boo4' },
+  { id: '13434', type: 'Prod', title: 'Hoi', description: 'boo' },
+  { id: '72322', type: 'Subsc', title: 'Hoi2', description: 'boo2' },
+  { id: '25434', type: 'Prod', title: 'Hoi3', description: 'boo3' },
+  { id: '98794', type: 'Subsc', title: 'Hoi4', description: 'boo4' },
 ];
 
 export default App;

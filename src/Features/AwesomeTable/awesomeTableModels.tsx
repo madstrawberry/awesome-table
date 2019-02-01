@@ -1,9 +1,16 @@
 export interface Col {
-  [colName: string]: { id: string; title: string; disableToggle: boolean; disableSort: boolean };
+  [colName: string]: ColContent;
 }
 
 export interface Row {
   [colName: string]: RowContent;
+}
+
+export interface ColContent {
+  id: string;
+  title: string;
+  disableToggle: boolean;
+  disableSort: boolean;
 }
 
 export type RowContent = string | RowElementContent;

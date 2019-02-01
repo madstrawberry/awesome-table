@@ -23,6 +23,9 @@ interface State {
   sortCol: undefined | SortCol;
 }
 
+const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
+const SortableTableCell = SortableElement((props: TableCellProps) => <TableCell {...props} />);
+
 class AwesomeTable extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -169,8 +172,5 @@ class AwesomeTable extends React.Component<Props, State> {
     );
   }
 }
-
-const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
-const SortableTableCell = SortableElement((props: TableCellProps) => <TableCell {...props} />);
 
 export default AwesomeTable;

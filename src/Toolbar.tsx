@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AwesomeTableRenderProps } from './Features/AwesomeTable/AwesomeTable';
+import { AwesomeTableRenderProps } from './Features/AwesomeTable/awesomeTableModels';
 
 interface Props extends AwesomeTableRenderProps {}
 

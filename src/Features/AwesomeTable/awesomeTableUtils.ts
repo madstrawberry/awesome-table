@@ -1,4 +1,4 @@
-import { Row, SortCol } from './AwesomeTable';
+import { Row, SortCol } from './awesomeTableModels';
 
 export const ascSort = (sortCol: SortCol) => (a: Row, b: Row) => {
   let valueA = a[sortCol.name];
