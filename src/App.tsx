@@ -30,7 +30,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <AwesomeTable rows={rows} cols={cols} name="cool">
+        <AwesomeTable rows={rows} cols={cols} name="selectedFilters">
           {({ toggleComponent }) => <Toolbar toggleComponent={toggleComponent} />}
         </AwesomeTable>
       </div>
