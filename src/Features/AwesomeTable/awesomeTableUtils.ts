@@ -4,8 +4,12 @@ export const ascSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
   let valueA = a[sortCol.name];
   let valueB = b[sortCol.name];
 
-  valueA = typeof valueA === 'string' ? valueA : valueA.sortString;
-  valueB = typeof valueB === 'string' ? valueB : valueB.sortString;
+  if (!valueA || !valueB) {
+    return 0;
+  }
+
+  valueA = typeof valueA !== 'object' ? valueA : valueA.sortString;
+  valueB = typeof valueB !== 'object' ? valueB : valueB.sortString;
 
   if (valueA < valueB) {
     return -1;
@@ -20,8 +24,12 @@ export const descSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
   let valueA = a[sortCol.name];
   let valueB = b[sortCol.name];
 
-  valueA = typeof valueA === 'string' ? valueA : valueA.sortString;
-  valueB = typeof valueB === 'string' ? valueB : valueB.sortString;
+  if (!valueA || !valueB) {
+    return 0;
+  }
+
+  valueA = typeof valueA !== 'object' ? valueA : valueA.sortString;
+  valueB = typeof valueB !== 'object' ? valueB : valueB.sortString;
 
   if (valueA > valueB) {
     return -1;

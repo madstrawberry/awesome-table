@@ -22,7 +22,7 @@ const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...pr
 const SortableTableCell = SortableElement((props: TableCellProps) => <TableCell {...props} />);
 
 const renderCellContent = (val: RowContent) => {
-  if (typeof val === 'string') {
+  if (!val || typeof val !== 'object') {
     return val;
   }
 

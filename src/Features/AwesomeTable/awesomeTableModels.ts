@@ -13,7 +13,7 @@ export interface ColContent {
   disableSort?: boolean;
 }
 
-export type RowContent = string | RowElementContent;
+export type RowContent = string | number | null | RowElementContent;
 
 export interface RowElementContent {
   sortString: string;
