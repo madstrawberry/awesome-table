@@ -95,7 +95,7 @@ class AwesomeTable extends React.Component<Props, State> {
 
   sortCol = (colName: string) => () => {
     this.setState(({ sortOrder }) => {
-      return !sortOrder
+      return !sortOrder || sortOrder.name !== colName
         ? { sortOrder: { name: colName, sortAsc: true } }
         : { sortOrder: { name: colName, sortAsc: !sortOrder.sortAsc } };
     });
