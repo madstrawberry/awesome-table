@@ -21,7 +21,7 @@ class AwesomeTableContainer extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.id = `visibleCols-${props.name}`;
+    this.id = `awesomeTableVisibleCols-${props.name}`;
 
     this.state = {
       visibleCols: this.getInitialVisibleCols(),
