@@ -95,16 +95,9 @@ class AwesomeTable extends React.Component<Props, State> {
 
   sortCol = (colName: string) => () => {
     this.setState(({ sortOrder }) => {
-      if (!sortOrder) {
-        return { sortOrder: { name: colName, order: 'ASC' } };
-      }
-
-      return {
-        sortOrder: {
-          name: colName,
-          order: sortOrder.order === 'DESC' ? 'ASC' : 'DESC',
-        },
-      };
+      return !sortOrder
+        ? { sortOrder: { name: colName, sortAsc: true } }
+        : { sortOrder: { name: colName, sortAsc: !sortOrder.sortAsc } };
     });
   };
 
@@ -124,8 +117,9 @@ class AwesomeTable extends React.Component<Props, State> {
       return rows;
     }
 
-    const sortedRows =
-      sortOrder.order === 'ASC' ? rows.sort(ascSort(sortOrder)) : rows.sort(descSort(sortOrder));
+    const sortedRows = sortOrder.sortAsc
+      ? rows.sort(ascSort(sortOrder))
+      : rows.sort(descSort(sortOrder));
 
     return sortedRows;
   };

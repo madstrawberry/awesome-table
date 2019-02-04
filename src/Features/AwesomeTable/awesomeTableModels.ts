@@ -29,5 +29,5 @@ export interface AwesomeTableRenderProps {
 
 export interface SortOrder {
   name: string;
-  order: 'ASC' | 'DESC';
+  sortAsc: boolean;
 }
