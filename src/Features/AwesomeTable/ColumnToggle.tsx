@@ -17,7 +17,7 @@ interface State {
   anchorEl: null | HTMLElement;
 }
 
-class ColumnToggler extends React.Component<Props, State> {
+class ColumnToggle extends React.Component<Props, State> {
   state: State = {
     anchorEl: null,
   };
@@ -62,4 +62,4 @@ class ColumnToggler extends React.Component<Props, State> {
   }
 }
 
-export default ColumnToggler;
+export default ColumnToggle;

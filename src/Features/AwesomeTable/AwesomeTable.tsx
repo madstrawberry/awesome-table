@@ -8,7 +8,7 @@ import * as React from 'react';
 import uuid from 'uuid';
 import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
 import { LocalStorage, ascSort, descSort } from './awesomeTableUtils';
-import ColumnToggler from './ColumnToggler';
+import ColumnToggle from './ColumnToggle';
 import { AwesomeTableRenderProps, Row, Col, SortCol, RowContent } from './awesomeTableModels';
 
 interface Props {
@@ -85,7 +85,7 @@ class AwesomeTable extends React.Component<Props, State> {
     const { visibleCols } = this.state;
 
     return (
-      <ColumnToggler
+      <ColumnToggle
         cols={cols}
         isColVisible={col => visibleCols.includes(col)}
         toggleCol={this.toggleCol}
