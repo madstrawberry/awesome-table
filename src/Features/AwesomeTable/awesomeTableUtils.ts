@@ -1,6 +1,6 @@
-import { Row, SortCol } from './awesomeTableModels';
+import { Row, SortOrder } from './awesomeTableModels';
 
-export const ascSort = (sortCol: SortCol) => (a: Row, b: Row) => {
+export const ascSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
   let valueA = a[sortCol.name];
   let valueB = b[sortCol.name];
 
@@ -16,7 +16,7 @@ export const ascSort = (sortCol: SortCol) => (a: Row, b: Row) => {
   return 0;
 };
 
-export const descSort = (sortCol: SortCol) => (a: Row, b: Row) => {
+export const descSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
   let valueA = a[sortCol.name];
   let valueB = b[sortCol.name];
 

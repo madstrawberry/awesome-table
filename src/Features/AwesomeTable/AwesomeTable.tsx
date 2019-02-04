@@ -9,7 +9,7 @@ import uuid from 'uuid';
 import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
 import { LocalStorage, ascSort, descSort } from './awesomeTableUtils';
 import ColumnToggle from './ColumnToggle';
-import { AwesomeTableRenderProps, Row, Col, SortCol, RowContent } from './awesomeTableModels';
+import { AwesomeTableRenderProps, Row, Col, SortOrder, RowContent } from './awesomeTableModels';
 
 interface Props {
   rows: Row[];
@@ -20,7 +20,7 @@ interface Props {
 
 interface State {
   visibleCols: string[];
-  sortCol: undefined | SortCol;
+  sortOrder: undefined | SortOrder;
 }
 
 const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
@@ -34,7 +34,7 @@ class AwesomeTable extends React.Component<Props, State> {
 
     this.state = {
       visibleCols: this.getInitialVisibleCols(),
-      sortCol: undefined,
+      sortOrder: undefined,
     };
   }
 
@@ -94,10 +94,17 @@ class AwesomeTable extends React.Component<Props, State> {
   };
 
   sortCol = (colName: string) => () => {
-    this.setState(({ sortCol }) => {
-      return sortCol
-        ? { sortCol: { name: colName, order: sortCol.order === 'DESC' ? 'ASC' : 'DESC' } }
-        : { sortCol: { name: colName, order: 'ASC' } };
+    this.setState(({ sortOrder }) => {
+      if (!sortOrder) {
+        return { sortOrder: { name: colName, order: 'ASC' } };
+      }
+
+      return {
+        sortOrder: {
+          name: colName,
+          order: sortOrder.order === 'DESC' ? 'ASC' : 'DESC',
+        },
+      };
     });
   };
 
@@ -110,15 +117,15 @@ class AwesomeTable extends React.Component<Props, State> {
   };
 
   getSortedRows = () => {
-    const { sortCol } = this.state;
+    const { sortOrder } = this.state;
     const { rows } = this.props;
 
-    if (!sortCol) {
+    if (!sortOrder) {
       return rows;
     }
 
     const sortedRows =
-      sortCol.order === 'ASC' ? rows.sort(ascSort(sortCol)) : rows.sort(descSort(sortCol));
+      sortOrder.order === 'ASC' ? rows.sort(ascSort(sortOrder)) : rows.sort(descSort(sortOrder));
 
     return sortedRows;
   };
