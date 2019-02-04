@@ -14,19 +14,15 @@ class App extends Component {
       id: {
         id: 'id',
         title: 'ID',
-        disableToggle: false,
-        disableSort: false,
       },
       name: {
         id: 'name',
         title: 'Name',
         disableToggle: true,
-        disableSort: false,
       },
       description: {
         id: 'description',
         title: 'Description',
-        disableToggle: false,
         disableSort: true,
       },
     };
