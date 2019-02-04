@@ -30,16 +30,13 @@ class App extends Component {
 
 const cols: AppCol = {
   prodId: {
-    id: 'prodId',
     title: 'ID',
   },
   name: {
-    id: 'name',
     title: 'Name',
     disableToggle: true,
   },
   description: {
-    id: 'description',
     title: 'Description',
     disableSort: true,
   },

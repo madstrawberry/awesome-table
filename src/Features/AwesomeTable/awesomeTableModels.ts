@@ -8,7 +8,6 @@ export interface Row {
 }
 
 export interface ColContent {
-  id: string;
   title: string;
   disableToggle?: boolean;
   disableSort?: boolean;

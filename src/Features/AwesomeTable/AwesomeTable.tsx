@@ -45,10 +45,10 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
             <Checkbox />
           </TableCell>
           {visibleCols.map((name, index) => (
-            <SortableTableCell index={index} key={cols[name].id}>
+            <SortableTableCell index={index} key={name}>
               <>
                 <TableSortLabel
-                  active={sortOrder && sortOrder.name === cols[name].id}
+                  active={sortOrder && sortOrder.name === name}
                   direction={!!sortOrder && sortOrder.sortAsc ? 'asc' : 'desc'}
                   disabled={cols[name].disableSort}
                   onClick={() => onSortRow(name)}
