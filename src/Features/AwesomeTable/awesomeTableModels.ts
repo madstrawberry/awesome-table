@@ -3,6 +3,7 @@ export interface Col {
 }
 
 export interface Row {
+  id: string;
   [colName: string]: RowContent;
 }
 

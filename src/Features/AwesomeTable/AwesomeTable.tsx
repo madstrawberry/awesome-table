@@ -7,7 +7,6 @@ import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc'
 import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
 import { Row, Col, RowContent, SortOrder } from './awesomeTableModels';
-import uuid from 'uuid';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 interface Props {
@@ -63,12 +62,12 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
       </TableHead>
       <TableBody>
         {sortedRows.map(row => (
-          <TableRow key={uuid()}>
+          <TableRow key={row.id}>
             <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
               <Checkbox />
             </TableCell>
             {visibleCols.map(name => (
-              <TableCell key={uuid()}>{renderCellContent(row[name])}</TableCell>
+              <TableCell key={`${row.id}-${name}`}>{renderCellContent(row[name])}</TableCell>
             ))}
           </TableRow>
         ))}

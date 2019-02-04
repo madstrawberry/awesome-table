@@ -3,6 +3,7 @@ import './App.css';
 import AwesomeTableContainer from './Features/AwesomeTable/AwesomeTableContainer';
 import { Col, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
 import Toolbar from './Toolbar';
+import uuid from 'uuid';
 
 class App extends Component {
   render() {
@@ -27,8 +28,8 @@ class App extends Component {
 }
 
 const cols: AppCol = {
-  id: {
-    id: 'id',
+  prodId: {
+    id: 'prodId',
     title: 'ID',
   },
   name: {
@@ -45,7 +46,8 @@ const cols: AppCol = {
 
 function generateRows(mockData: Data[]): AppRow[] {
   return mockData.map(d => ({
-    id: d.id,
+    id: uuid(),
+    prodId: d.id,
     name: {
       sortString: d.type,
       content: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
@@ -62,13 +64,13 @@ export interface Data {
 }
 
 export interface AppCol extends Col {
-  id: ColContent;
+  prodId: ColContent;
   name: ColContent;
   description: ColContent;
 }
 
 export interface AppRow extends Row {
-  id: RowContent;
+  prodId: RowContent;
   name: RowContent;
   description: RowContent;
 }
