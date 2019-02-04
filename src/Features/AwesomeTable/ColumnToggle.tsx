@@ -2,7 +2,6 @@ import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
-import uuid from 'uuid';
 import { Col } from './awesomeTableModels';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -48,7 +47,7 @@ class ColumnToggle extends React.Component<Props, State> {
           {Object.keys(cols).map(col => (
             <MenuItem
               style={{ paddingLeft: 0 }}
-              key={uuid()}
+              key={col}
               disabled={cols[col].disableToggle}
               onClick={() => toggleCol(col)}
             >
