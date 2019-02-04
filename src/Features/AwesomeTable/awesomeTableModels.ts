@@ -21,10 +21,8 @@ export interface RowElementContent {
 }
 
 export interface AwesomeTableRenderProps {
-  // cols: Col;
-  // isColVisible: (col: string) => boolean;
-  // toggleColumn: (col: string) => void;
   renderColumnToggle: () => JSX.Element;
+  renderTable: () => JSX.Element;
 }
 
 export interface SortOrder {

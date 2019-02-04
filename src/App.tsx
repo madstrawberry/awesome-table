@@ -13,7 +13,12 @@ class App extends Component {
     return (
       <div className="App">
         <AwesomeTable rows={rows} cols={cols} name="selectedFilters">
-          {props => <Toolbar {...props} />}
+          {({ renderColumnToggle, renderTable }) => (
+            <>
+              <Toolbar renderColumnToggle={renderColumnToggle} />
+              {renderTable()}
+            </>
+          )}
         </AwesomeTable>
       </div>
     );

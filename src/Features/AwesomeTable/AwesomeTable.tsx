@@ -80,33 +80,12 @@ class AwesomeTable extends React.Component<Props, State> {
     LocalStorage.setItem(this.id, visibleCols);
   };
 
-  renderColumnToggle = () => {
-    const { cols } = this.props;
-    const { visibleCols } = this.state;
-
-    return (
-      <ColumnToggle
-        cols={cols}
-        isColVisible={col => visibleCols.includes(col)}
-        toggleCol={this.toggleCol}
-      />
-    );
-  };
-
   sortCol = (colName: string) => () => {
     this.setState(({ sortOrder }) => {
       return !sortOrder || sortOrder.name !== colName
         ? { sortOrder: { name: colName, sortAsc: true } }
         : { sortOrder: { name: colName, sortAsc: !sortOrder.sortAsc } };
     });
-  };
-
-  renderCellContent = (val: RowContent) => {
-    if (typeof val === 'string') {
-      return val;
-    }
-
-    return val.content;
   };
 
   getSortedRows = () => {
@@ -124,53 +103,74 @@ class AwesomeTable extends React.Component<Props, State> {
     return sortedRows;
   };
 
-  render() {
+  renderCellContent = (val: RowContent) => {
+    if (typeof val === 'string') {
+      return val;
+    }
+
+    return val.content;
+  };
+
+  renderColumnToggle = () => {
+    const { cols } = this.props;
     const { visibleCols } = this.state;
-    const { cols, children } = this.props;
 
-    const renderProps = {
-      renderColumnToggle: this.renderColumnToggle,
-      // cols,
-      // isColVisible: col => visibleCols.includes(col),
-      // toggleColumn: this.toggleColumn,
-    };
+    return (
+      <ColumnToggle
+        cols={cols}
+        isColVisible={col => visibleCols.includes(col)}
+        toggleCol={this.toggleCol}
+      />
+    );
+  };
 
+  renderTable = () => {
+    const { visibleCols } = this.state;
+    const { cols } = this.props;
     const sortedRows = this.getSortedRows();
 
     return (
-      <>
-        {!!children && children(renderProps)}
-        <Table>
-          <TableHead>
-            <SortableRow axis="x" onSortEnd={this.updateOrder}>
+      <Table>
+        <TableHead>
+          <SortableRow axis="x" onSortEnd={this.updateOrder}>
+            <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
+              <Checkbox />
+            </TableCell>
+            {visibleCols.map((name, index) => (
+              <SortableTableCell index={index} key={cols[name].id}>
+                <>
+                  {cols[name].title}
+                  {!cols[name].disableSort && <button onClick={this.sortCol(name)}>Sort</button>}
+                </>
+              </SortableTableCell>
+            ))}
+          </SortableRow>
+        </TableHead>
+        <TableBody>
+          {sortedRows.map(row => (
+            <TableRow key={uuid()}>
               <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
                 <Checkbox />
               </TableCell>
-              {visibleCols.map((name, index) => (
-                <SortableTableCell index={index} key={cols[name].id}>
-                  <>
-                    {cols[name].title}
-                    {!cols[name].disableSort && <button onClick={this.sortCol(name)}>Sort</button>}
-                  </>
-                </SortableTableCell>
+              {visibleCols.map(name => (
+                <TableCell key={uuid()}>{this.renderCellContent(row[name])}</TableCell>
               ))}
-            </SortableRow>
-          </TableHead>
-          <TableBody>
-            {sortedRows.map(row => (
-              <TableRow key={uuid()}>
-                <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-                  <Checkbox />
-                </TableCell>
-                {visibleCols.map(name => (
-                  <TableCell key={uuid()}>{this.renderCellContent(row[name])}</TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     );
+  };
+
+  render() {
+    const { children } = this.props;
+
+    const renderProps = {
+      renderColumnToggle: this.renderColumnToggle,
+      renderTable: this.renderTable,
+    };
+
+    return !!children && children(renderProps);
   }
 }
 
