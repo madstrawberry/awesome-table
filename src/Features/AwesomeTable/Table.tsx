@@ -3,7 +3,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MuiTable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
-import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
+import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc';
 import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
 import { Row, Col, RowContent, SortOrder } from './awesomeTableModels';
