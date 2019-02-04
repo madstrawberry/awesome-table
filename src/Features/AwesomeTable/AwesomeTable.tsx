@@ -45,7 +45,7 @@ class AwesomeTable extends React.Component<Props, State> {
     return initialColNames;
   };
 
-  updateOrder = ({ oldIndex, newIndex }: SortEnd) => {
+  updateColOrder = ({ oldIndex, newIndex }: SortEnd) => {
     const { visibleCols } = this.state;
     const updatedVisibleCols = arrayMove(visibleCols, oldIndex, newIndex);
 
@@ -71,7 +71,7 @@ class AwesomeTable extends React.Component<Props, State> {
     LocalStorage.setItem(this.id, visibleCols);
   };
 
-  sortCol = (colName: string) => () => {
+  sortRow = (colName: string) => () => {
     this.setState(({ sortOrder }) => {
       return !sortOrder || sortOrder.name !== colName
         ? { sortOrder: { name: colName, sortAsc: true } }
@@ -117,8 +117,8 @@ class AwesomeTable extends React.Component<Props, State> {
         visibleCols={visibleCols}
         cols={cols}
         sortedRows={sortedRows}
-        onSortCol={this.updateOrder}
-        onSortRow={this.sortCol}
+        onSortCol={this.updateColOrder}
+        onSortRow={this.sortRow}
       />
     );
   };
