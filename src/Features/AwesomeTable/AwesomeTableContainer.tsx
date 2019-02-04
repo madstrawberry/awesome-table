@@ -6,7 +6,6 @@ import { AwesomeTableRenderProps, Row, Col, SortOrder } from './awesomeTableMode
 import AwesomeTable from './AwesomeTable';
 
 interface Props {
-  rows: Row[];
   cols: Col;
   name: string;
   children: (renderProps: AwesomeTableRenderProps) => JSX.Element;
@@ -79,9 +78,8 @@ class AwesomeTableContainer extends React.Component<Props, State> {
     });
   };
 
-  getSortedRows = () => {
+  getSortedRows = (rows: Row[]) => {
     const { sortOrder } = this.state;
-    const { rows } = this.props;
 
     if (!sortOrder) {
       return rows;
@@ -107,10 +105,10 @@ class AwesomeTableContainer extends React.Component<Props, State> {
     );
   };
 
-  renderTable = () => {
+  renderTable = (rows: Row[]) => {
     const { visibleCols, sortOrder } = this.state;
     const { cols } = this.props;
-    const sortedRows = this.getSortedRows();
+    const sortedRows = this.getSortedRows(rows);
 
     return (
       <AwesomeTable

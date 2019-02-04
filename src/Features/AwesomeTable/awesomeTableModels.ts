@@ -22,7 +22,7 @@ export interface RowElementContent {
 
 export interface AwesomeTableRenderProps {
   renderColumnToggle: () => JSX.Element;
-  renderTable: () => JSX.Element;
+  renderTable: (rows: Row[]) => JSX.Element;
   sortRow: (colName: string) => void;
   toggleCol: (colName: string) => void;
 }

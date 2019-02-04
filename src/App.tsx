@@ -13,11 +13,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <AwesomeTableContainer rows={rows} cols={cols} name="selectedFilters">
+        <AwesomeTableContainer cols={cols} name="selectedFilters">
           {({ renderColumnToggle, renderTable, sortRow, toggleCol }) => (
             <>
               <Toolbar renderColumnToggle={renderColumnToggle} />
-              {renderTable()}
+              {renderTable(rows)}
               <button onClick={() => sortRow('description')}>I am an external sort</button>
               <button onClick={() => toggleCol('description')}>Toggle description</button>
             </>
