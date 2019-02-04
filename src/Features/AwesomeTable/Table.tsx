@@ -14,7 +14,7 @@ interface Props {
   sortedRows: Row[];
   cols: Col;
   onSortCol: (newOrder: SortEnd) => void;
-  onSortRow: (name: string) => () => void;
+  onSortRow: (name: string) => void;
 }
 
 const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
@@ -46,7 +46,7 @@ const component: React.FunctionComponent<Props> = ({
             <SortableTableCell index={index} key={cols[name].id}>
               <>
                 {cols[name].title}
-                {!cols[name].disableSort && <button onClick={onSortRow(name)}>Sort</button>}
+                {!cols[name].disableSort && <button onClick={() => onSortRow(name)}>Sort</button>}
               </>
             </SortableTableCell>
           ))}
