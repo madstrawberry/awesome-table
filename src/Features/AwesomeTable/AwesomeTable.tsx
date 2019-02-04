@@ -1,30 +1,21 @@
-import Checkbox from '@material-ui/core/Checkbox';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
-import * as React from 'react';
-import uuid from 'uuid';
-import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
+import React from 'react';
+import { arrayMove, SortEnd } from 'react-sortable-hoc';
 import { LocalStorage, ascSort, descSort } from './awesomeTableUtils';
 import ColumnToggle from './ColumnToggle';
 import { AwesomeTableRenderProps, Row, Col, SortOrder, RowContent } from './awesomeTableModels';
+import Table from './Table';
 
 interface Props {
   rows: Row[];
   cols: Col;
   name: string;
-  children?: (renderProps: AwesomeTableRenderProps) => JSX.Element;
+  children: (renderProps: AwesomeTableRenderProps) => JSX.Element;
 }
 
 interface State {
   visibleCols: string[];
   sortOrder: undefined | SortOrder;
 }
-
-const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
-const SortableTableCell = SortableElement((props: TableCellProps) => <TableCell {...props} />);
 
 class AwesomeTable extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -103,14 +94,6 @@ class AwesomeTable extends React.Component<Props, State> {
     return sortedRows;
   };
 
-  renderCellContent = (val: RowContent) => {
-    if (typeof val === 'string') {
-      return val;
-    }
-
-    return val.content;
-  };
-
   renderColumnToggle = () => {
     const { cols } = this.props;
     const { visibleCols } = this.state;
@@ -130,35 +113,13 @@ class AwesomeTable extends React.Component<Props, State> {
     const sortedRows = this.getSortedRows();
 
     return (
-      <Table>
-        <TableHead>
-          <SortableRow axis="x" onSortEnd={this.updateOrder}>
-            <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-              <Checkbox />
-            </TableCell>
-            {visibleCols.map((name, index) => (
-              <SortableTableCell index={index} key={cols[name].id}>
-                <>
-                  {cols[name].title}
-                  {!cols[name].disableSort && <button onClick={this.sortCol(name)}>Sort</button>}
-                </>
-              </SortableTableCell>
-            ))}
-          </SortableRow>
-        </TableHead>
-        <TableBody>
-          {sortedRows.map(row => (
-            <TableRow key={uuid()}>
-              <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-                <Checkbox />
-              </TableCell>
-              {visibleCols.map(name => (
-                <TableCell key={uuid()}>{this.renderCellContent(row[name])}</TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Table
+        visibleCols={visibleCols}
+        cols={cols}
+        sortedRows={sortedRows}
+        onSortCol={this.updateOrder}
+        onSortRow={this.sortCol}
+      />
     );
   };
 
@@ -170,7 +131,7 @@ class AwesomeTable extends React.Component<Props, State> {
       renderTable: this.renderTable,
     };
 
-    return !!children && children(renderProps);
+    return children(renderProps);
   }
 }
 
