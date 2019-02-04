@@ -32,11 +32,11 @@ export const descSort = (sortCol: SortCol) => (a: Row, b: Row) => {
   return 0;
 };
 
-const hasLocalStorage = typeof window !== 'undefined' && window.localStorage;
-
 export const LocalStorage = {
+  hasLocalStorage: typeof window !== 'undefined' && window.localStorage,
+
   setItem(name: string, content: object | string) {
-    if (!hasLocalStorage) {
+    if (!this.hasLocalStorage) {
       return;
     }
 
@@ -44,7 +44,7 @@ export const LocalStorage = {
   },
 
   getItem<T = any>(name: string): T | null {
-    if (!hasLocalStorage) {
+    if (!this.hasLocalStorage) {
       return null;
     }
 

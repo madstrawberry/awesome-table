@@ -15,7 +15,7 @@ interface Props {
   rows: Row[];
   cols: Col;
   name: string;
-  children?: (toolbarProps: AwesomeTableRenderProps) => JSX.Element;
+  children?: (renderProps: AwesomeTableRenderProps) => JSX.Element;
 }
 
 interface State {
@@ -80,7 +80,7 @@ class AwesomeTable extends React.Component<Props, State> {
     LocalStorage.setItem(this.id, visibleCols);
   };
 
-  getToggleComponent = () => {
+  renderColumnToggle = () => {
     const { cols } = this.props;
     const { visibleCols } = this.state;
 
@@ -128,7 +128,7 @@ class AwesomeTable extends React.Component<Props, State> {
     const { cols, children } = this.props;
 
     const renderProps = {
-      toggleComponent: this.getToggleComponent,
+      renderColumnToggle: this.renderColumnToggle,
       // cols,
       // isColVisible: col => visibleCols.includes(col),
       // toggleColumn: this.toggleColumn,
