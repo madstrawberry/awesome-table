@@ -44,8 +44,8 @@ const cols: AppCol = {
   },
 };
 
-function generateRows(mockData: Data[]): AppRow[] {
-  return mockData.map(d => ({
+function generateRows(data: Data[]): AppRow[] {
+  return data.map(d => ({
     id: uuid(),
     prodId: d.id,
     name: {
