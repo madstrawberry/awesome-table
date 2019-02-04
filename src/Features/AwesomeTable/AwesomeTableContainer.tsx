@@ -131,6 +131,7 @@ class AwesomeTableContainer extends React.Component<Props, State> {
       renderColumnToggle: this.renderColumnToggle,
       renderTable: this.renderTable,
       sortRow: this.sortRow,
+      toggleCol: this.toggleCol,
     };
 
     return children(renderProps);
