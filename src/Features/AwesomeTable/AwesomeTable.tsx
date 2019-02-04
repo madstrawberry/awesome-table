@@ -40,7 +40,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
   return (
     <Table>
       <TableHead>
-        <SortableRow axis="x" pressDelay={100} onSortEnd={onSortCol}>
+        <SortableRow axis="x" pressDelay={200} onSortEnd={onSortCol}>
           <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
             <Checkbox />
           </TableCell>
