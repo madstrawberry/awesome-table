@@ -108,12 +108,13 @@ class AwesomeTable extends React.Component<Props, State> {
   };
 
   renderTable = () => {
-    const { visibleCols } = this.state;
+    const { visibleCols, sortOrder } = this.state;
     const { cols } = this.props;
     const sortedRows = this.getSortedRows();
 
     return (
       <Table
+        sortOrder={sortOrder}
         visibleCols={visibleCols}
         cols={cols}
         sortedRows={sortedRows}

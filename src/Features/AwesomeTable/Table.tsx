@@ -6,13 +6,15 @@ import TableHead from '@material-ui/core/TableHead';
 import { SortableContainer, SortableElement, arrayMove, SortEnd } from 'react-sortable-hoc';
 import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
-import { Row, Col, RowContent } from './awesomeTableModels';
+import { Row, Col, RowContent, SortOrder } from './awesomeTableModels';
 import uuid from 'uuid';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 interface Props {
   visibleCols: string[];
   sortedRows: Row[];
   cols: Col;
+  sortOrder: SortOrder | undefined;
   onSortCol: (newOrder: SortEnd) => void;
   onSortRow: (name: string) => void;
 }
@@ -34,19 +36,26 @@ const component: React.FunctionComponent<Props> = ({
   cols,
   onSortCol,
   onSortRow,
+  sortOrder,
 }) => {
   return (
     <MuiTable>
       <TableHead>
-        <SortableRow axis="x" onSortEnd={onSortCol}>
+        <SortableRow axis="x" pressDelay={100} onSortEnd={onSortCol}>
           <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
             <Checkbox />
           </TableCell>
           {visibleCols.map((name, index) => (
             <SortableTableCell index={index} key={cols[name].id}>
               <>
-                {cols[name].title}
-                {!cols[name].disableSort && <button onClick={() => onSortRow(name)}>Sort</button>}
+                <TableSortLabel
+                  active={sortOrder && sortOrder.name === cols[name].id}
+                  direction={!!sortOrder && sortOrder.sortAsc ? 'asc' : 'desc'}
+                  disabled={cols[name].disableSort}
+                  onClick={() => onSortRow(name)}
+                >
+                  {cols[name].title}
+                </TableSortLabel>
               </>
             </SortableTableCell>
           ))}
