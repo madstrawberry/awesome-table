@@ -1,140 +1,80 @@
-import React from 'react';
-import { arrayMove, SortEnd } from 'react-sortable-hoc';
-import { LocalStorage, ascSort, descSort } from './awesomeTableUtils';
-import ColumnToggle from './ColumnToggle';
-import { AwesomeTableRenderProps, Row, Col, SortOrder, RowContent } from './awesomeTableModels';
-import Table from './Table';
+import * as React from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc';
+import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
+import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
+import { Row, Col, RowContent, SortOrder } from './awesomeTableModels';
+import uuid from 'uuid';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 interface Props {
-  rows: Row[];
-  cols: Col;
-  name: string;
-  children: (renderProps: AwesomeTableRenderProps) => JSX.Element;
-}
-
-interface State {
   visibleCols: string[];
-  sortOrder: undefined | SortOrder;
+  sortedRows: Row[];
+  cols: Col;
+  sortOrder: SortOrder | undefined;
+  onSortCol: (newOrder: SortEnd) => void;
+  onSortRow: (name: string) => void;
 }
 
-class AwesomeTable extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
+const SortableTableCell = SortableElement((props: TableCellProps) => <TableCell {...props} />);
 
-    this.id = `visibleCols-${props.name}`;
-
-    this.state = {
-      visibleCols: this.getInitialVisibleCols(),
-      sortOrder: undefined,
-    };
+const renderCellContent = (val: RowContent) => {
+  if (typeof val === 'string') {
+    return val;
   }
 
-  id: string;
+  return val.content;
+};
 
-  getInitialVisibleCols = () => {
-    const initialColNames = Object.keys(this.props.cols);
-    const savedVisibleColNames = LocalStorage.getItem<string[]>(this.id);
-
-    if (
-      !!savedVisibleColNames &&
-      savedVisibleColNames.every(colName => initialColNames.includes(colName))
-    ) {
-      return savedVisibleColNames;
-    }
-
-    return initialColNames;
-  };
-
-  updateColOrder = ({ oldIndex, newIndex }: SortEnd) => {
-    const { visibleCols } = this.state;
-    const updatedVisibleCols = arrayMove(visibleCols, oldIndex, newIndex);
-
-    this.updateVisibleCols(updatedVisibleCols);
-  };
-
-  toggleCol = (colNameToRemove: string) => {
-    const { visibleCols } = this.state;
-    let updatedVisibleCols;
-    const isToggled = visibleCols.includes(colNameToRemove);
-
-    if (!isToggled) {
-      updatedVisibleCols = visibleCols.concat(colNameToRemove);
-    } else {
-      updatedVisibleCols = visibleCols.filter(name => name !== colNameToRemove);
-    }
-
-    this.updateVisibleCols(updatedVisibleCols);
-  };
-
-  updateVisibleCols = (visibleCols: string[]) => {
-    this.setState({ visibleCols });
-    LocalStorage.setItem(this.id, visibleCols);
-  };
-
-  sortRow = (colName: string) => {
-    this.setState(({ sortOrder }) => {
-      return !sortOrder || sortOrder.name !== colName
-        ? { sortOrder: { name: colName, sortAsc: true } }
-        : { sortOrder: { name: colName, sortAsc: !sortOrder.sortAsc } };
-    });
-  };
-
-  getSortedRows = () => {
-    const { sortOrder } = this.state;
-    const { rows } = this.props;
-
-    if (!sortOrder) {
-      return rows;
-    }
-
-    const sortedRows = sortOrder.sortAsc
-      ? rows.sort(ascSort(sortOrder))
-      : rows.sort(descSort(sortOrder));
-
-    return sortedRows;
-  };
-
-  renderColumnToggle = () => {
-    const { cols } = this.props;
-    const { visibleCols } = this.state;
-
-    return (
-      <ColumnToggle
-        cols={cols}
-        isColVisible={col => visibleCols.includes(col)}
-        toggleCol={this.toggleCol}
-      />
-    );
-  };
-
-  renderTable = () => {
-    const { visibleCols, sortOrder } = this.state;
-    const { cols } = this.props;
-    const sortedRows = this.getSortedRows();
-
-    return (
-      <Table
-        sortOrder={sortOrder}
-        visibleCols={visibleCols}
-        cols={cols}
-        sortedRows={sortedRows}
-        onSortCol={this.updateColOrder}
-        onSortRow={this.sortRow}
-      />
-    );
-  };
-
-  render() {
-    const { children } = this.props;
-
-    const renderProps = {
-      renderColumnToggle: this.renderColumnToggle,
-      renderTable: this.renderTable,
-      sortRow: this.sortRow,
-    };
-
-    return children(renderProps);
-  }
-}
+const AwesomeTable: React.FunctionComponent<Props> = ({
+  visibleCols,
+  sortedRows,
+  cols,
+  onSortCol,
+  onSortRow,
+  sortOrder,
+}) => {
+  return (
+    <Table>
+      <TableHead>
+        <SortableRow axis="x" pressDelay={100} onSortEnd={onSortCol}>
+          <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
+            <Checkbox />
+          </TableCell>
+          {visibleCols.map((name, index) => (
+            <SortableTableCell index={index} key={cols[name].id}>
+              <>
+                <TableSortLabel
+                  active={sortOrder && sortOrder.name === cols[name].id}
+                  direction={!!sortOrder && sortOrder.sortAsc ? 'asc' : 'desc'}
+                  disabled={cols[name].disableSort}
+                  onClick={() => onSortRow(name)}
+                >
+                  {cols[name].title}
+                </TableSortLabel>
+              </>
+            </SortableTableCell>
+          ))}
+        </SortableRow>
+      </TableHead>
+      <TableBody>
+        {sortedRows.map(row => (
+          <TableRow key={uuid()}>
+            <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
+              <Checkbox />
+            </TableCell>
+            {visibleCols.map(name => (
+              <TableCell key={uuid()}>{renderCellContent(row[name])}</TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
 
 export default AwesomeTable;

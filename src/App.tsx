@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import AwesomeTable from './Features/AwesomeTable/AwesomeTable';
+import AwesomeTableContainer from './Features/AwesomeTable/AwesomeTableContainer';
 import { Col, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
 import Toolbar from './Toolbar';
 
@@ -12,7 +12,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <AwesomeTable rows={rows} cols={cols} name="selectedFilters">
+        <AwesomeTableContainer rows={rows} cols={cols} name="selectedFilters">
           {({ renderColumnToggle, renderTable, sortRow }) => (
             <>
               <Toolbar renderColumnToggle={renderColumnToggle} />
@@ -20,7 +20,7 @@ class App extends Component {
               <button onClick={() => sortRow('description')}>I am an external sort</button>
             </>
           )}
-        </AwesomeTable>
+        </AwesomeTableContainer>
       </div>
     );
   }
