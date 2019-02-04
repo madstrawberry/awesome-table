@@ -10,23 +10,6 @@ class App extends Component {
 
     const rows = generateRows(data);
 
-    const cols: AppCol = {
-      id: {
-        id: 'id',
-        title: 'ID',
-      },
-      name: {
-        id: 'name',
-        title: 'Name',
-        disableToggle: true,
-      },
-      description: {
-        id: 'description',
-        title: 'Description',
-        disableSort: true,
-      },
-    };
-
     return (
       <div className="App">
         <AwesomeTable rows={rows} cols={cols} name="selectedFilters">
@@ -36,6 +19,23 @@ class App extends Component {
     );
   }
 }
+
+const cols: AppCol = {
+  id: {
+    id: 'id',
+    title: 'ID',
+  },
+  name: {
+    id: 'name',
+    title: 'Name',
+    disableToggle: true,
+  },
+  description: {
+    id: 'description',
+    title: 'Description',
+    disableSort: true,
+  },
+};
 
 function generateRows(mockData: Data[]): AppRow[] {
   return mockData.map(d => ({
