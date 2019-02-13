@@ -1,26 +1,29 @@
 import { LocalStorage } from '../awesomeTableUtils';
 import { useEffect, useState } from 'react';
 
-const useCols = (cols: string[], id: string) => {
-  const [visibleCols, setVisibleCols] = useState<string[]>(cols);
+const useStateWithStorage = <T extends object>(content: T, key: string) => {
+  const [savedContent, setSavedContent] = useState<T>(content);
 
-  const setAndSaveVisibleCols = (cols: string[]) => {
-    LocalStorage.setItem(id, cols);
-    setVisibleCols(cols);
+  const updateContent = (content: T) => {
+    LocalStorage.setItem(key, content);
+    setSavedContent(content);
   };
 
   useEffect(() => {
-    const savedVisibleColNames = LocalStorage.getItem<string[]>(id);
+    const currentSavedContent = LocalStorage.getItem<T>(key);
 
-    if (!!savedVisibleColNames && savedVisibleColNames.every(colName => cols.includes(colName))) {
-      setAndSaveVisibleCols(savedVisibleColNames);
+    if (Array.isArray(currentSavedContent) && Array.isArray(content)) {
+      if (currentSavedContent.every(colName => content.includes(colName))) {
+        updateContent(currentSavedContent);
+      }
+
       return;
     }
 
-    setAndSaveVisibleCols(cols);
+    updateContent(content);
   }, []);
 
-  return [visibleCols, setAndSaveVisibleCols] as [typeof visibleCols, typeof setAndSaveVisibleCols];
+  return [savedContent, updateContent] as [typeof savedContent, typeof updateContent];
 };
 
-export default useCols;
+export default useStateWithStorage;

@@ -4,7 +4,7 @@ import { ascSort, descSort } from './awesomeTableUtils';
 import ColumnToggle from './ColumnToggle';
 import { AwesomeTableRenderProps, Row, Col, SortOrder } from './awesomeTableModels';
 import AwesomeTable from './AwesomeTable';
-import useCols from './hooks/useCols';
+import useStateWithStorage from './hooks/useCols';
 
 interface Props {
   cols: Col;
@@ -13,9 +13,9 @@ interface Props {
 }
 
 const AwesomeTableContainer2: React.FunctionComponent<Props> = ({ cols, name, children }) => {
-  const id = `awesomeTableVisibleCols-${name}`;
+  const key = `awesomeTableVisibleCols-${name}`;
 
-  const [visibleCols, setVisibleCols] = useCols(Object.keys(cols), id);
+  const [visibleCols, setVisibleCols] = useStateWithStorage(Object.keys(cols), key);
   const [sortOrder, setSortOrder] = useState<undefined | SortOrder>(undefined);
 
   const updateColOrder = ({ oldIndex, newIndex }: SortEnd) => {
