@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import AwesomeTableContainer from './Features/AwesomeTable/AwesomeTableContainer';
+import AwesomeTableContainer2 from './Features/AwesomeTable/AwesomeTableContainer2';
 import { Col, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
 import Toolbar from './Toolbar';
 import uuid from 'uuid';
@@ -13,7 +14,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <AwesomeTableContainer cols={cols} name="selectedFilters">
+        <AwesomeTableContainer2 cols={cols} name="selectedFilters">
           {({ renderColumnToggle, renderTable, sortRow, toggleCol }) => (
             <>
               <Toolbar renderColumnToggle={renderColumnToggle} />
@@ -22,7 +23,7 @@ class App extends Component {
               <button onClick={() => toggleCol('description')}>Toggle description</button>
             </>
           )}
-        </AwesomeTableContainer>
+        </AwesomeTableContainer2>
       </div>
     );
   }
