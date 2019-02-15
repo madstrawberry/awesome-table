@@ -37,6 +37,8 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
   onSortRow,
   sortOrder,
 }) => {
+  const colCount = visibleCols.length + 1; // Add one for checkbox
+
   return (
     <Table>
       <TableHead>
@@ -73,8 +75,8 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
             </TableRow>
             {!!row.detailsRow && (
               <TableRow style={{ height: 'auto' }}>
-                <TableCell padding="none" colSpan={12} style={{ border: 0 }}>
-                  ss
+                <TableCell padding="none" colSpan={colCount} style={{ border: 0 }}>
+                  {row.detailsRow}
                 </TableCell>
               </TableRow>
             )}
