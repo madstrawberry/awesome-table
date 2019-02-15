@@ -1,7 +1,7 @@
 import { LocalStorage } from '../awesomeTableUtils';
 import { useEffect, useState } from 'react';
 
-const useStateWithStorage = <T extends object>(content: T, key: string) => {
+const useStateWithStorage = <T extends object | string>(content: T, key: string) => {
   const [savedContent, setSavedContent] = useState<T>(content);
 
   const updateContent = (content: T) => {
@@ -9,7 +9,7 @@ const useStateWithStorage = <T extends object>(content: T, key: string) => {
     setSavedContent(content);
   };
 
-  useEffect(() => {
+  const setInitialContent = () => {
     const currentSavedContent = LocalStorage.getItem<T>(key);
 
     if (Array.isArray(currentSavedContent) && Array.isArray(content)) {
@@ -21,6 +21,10 @@ const useStateWithStorage = <T extends object>(content: T, key: string) => {
     }
 
     updateContent(content);
+  };
+
+  useEffect(() => {
+    setInitialContent();
   }, []);
 
   return [savedContent, updateContent] as [typeof savedContent, typeof updateContent];
