@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { arrayMove, SortEnd } from 'react-sortable-hoc';
-import { LocalStorage, ascSort, descSort } from './awesomeTableUtils';
+import { ascSort, descSort } from './awesomeTableUtils';
 import ColumnToggle from './ColumnToggle';
 import { AwesomeTableRenderProps, Row, Col, SortOrder } from './awesomeTableModels';
 import AwesomeTable from './AwesomeTable';
+import useStateWithStorage from './hooks/useStateWithStorage';
 
 interface Props {
   cols: Col;
@@ -11,49 +12,20 @@ interface Props {
   children: (renderProps: AwesomeTableRenderProps) => JSX.Element;
 }
 
-interface State {
-  visibleCols: string[];
-  sortOrder: undefined | SortOrder;
-}
+const AwesomeTableContainer: React.FunctionComponent<Props> = ({ cols, name, children }) => {
+  const key = `awesomeTableVisibleCols-${name}`;
 
-class AwesomeTableContainer extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+  const [visibleCols, setVisibleCols] = useStateWithStorage(Object.keys(cols), key);
+  const [sortOrder, setSortOrder] = useState<undefined | SortOrder>(undefined);
 
-    this.id = `awesomeTableVisibleCols-${props.name}`;
-
-    this.state = {
-      visibleCols: this.getInitialVisibleCols(),
-      sortOrder: undefined,
-    };
-  }
-
-  id: string;
-
-  getInitialVisibleCols = () => {
-    const initialColNames = Object.keys(this.props.cols);
-    const savedVisibleColNames = LocalStorage.getItem<string[]>(this.id);
-
-    if (
-      !!savedVisibleColNames &&
-      savedVisibleColNames.every(colName => initialColNames.includes(colName))
-    ) {
-      return savedVisibleColNames;
-    }
-
-    return initialColNames;
-  };
-
-  updateColOrder = ({ oldIndex, newIndex }: SortEnd) => {
-    const { visibleCols } = this.state;
+  const updateColOrder = ({ oldIndex, newIndex }: SortEnd) => {
     const updatedVisibleCols = arrayMove(visibleCols, oldIndex, newIndex);
 
-    this.updateVisibleCols(updatedVisibleCols);
+    setVisibleCols(updatedVisibleCols);
   };
 
-  toggleCol = (colNameToRemove: string) => {
-    const { visibleCols } = this.state;
-    let updatedVisibleCols;
+  const toggleCol = (colNameToRemove: string) => {
+    let updatedVisibleCols: string[];
     const isToggled = visibleCols.includes(colNameToRemove);
 
     if (!isToggled) {
@@ -62,25 +34,19 @@ class AwesomeTableContainer extends React.Component<Props, State> {
       updatedVisibleCols = visibleCols.filter(name => name !== colNameToRemove);
     }
 
-    this.updateVisibleCols(updatedVisibleCols);
+    setVisibleCols(updatedVisibleCols);
   };
 
-  updateVisibleCols = (visibleCols: string[]) => {
-    this.setState({ visibleCols });
-    LocalStorage.setItem(this.id, visibleCols);
+  const sortRow = (colName: string) => {
+    const updatedSortOrder =
+      !sortOrder || sortOrder.name !== colName
+        ? { name: colName, sortAsc: true }
+        : { name: colName, sortAsc: !sortOrder.sortAsc };
+
+    setSortOrder(updatedSortOrder);
   };
 
-  sortRow = (colName: string) => {
-    this.setState(({ sortOrder }) => {
-      return !sortOrder || sortOrder.name !== colName
-        ? { sortOrder: { name: colName, sortAsc: true } }
-        : { sortOrder: { name: colName, sortAsc: !sortOrder.sortAsc } };
-    });
-  };
-
-  getSortedRows = (rows: Row[]) => {
-    const { sortOrder } = this.state;
-
+  const getSortedRows = (rows: Row[]) => {
     if (!sortOrder) {
       return rows;
     }
@@ -92,23 +58,18 @@ class AwesomeTableContainer extends React.Component<Props, State> {
     return sortedRows;
   };
 
-  renderColumnToggle = () => {
-    const { cols } = this.props;
-    const { visibleCols } = this.state;
-
+  const renderColumnToggle = () => {
     return (
       <ColumnToggle
         cols={cols}
         isColVisible={col => visibleCols.includes(col)}
-        toggleCol={this.toggleCol}
+        toggleCol={toggleCol}
       />
     );
   };
 
-  renderTable = (rows: Row[]) => {
-    const { visibleCols, sortOrder } = this.state;
-    const { cols } = this.props;
-    const sortedRows = this.getSortedRows(rows);
+  const renderTable = (rows: Row[]) => {
+    const sortedRows = getSortedRows(rows);
 
     return (
       <AwesomeTable
@@ -116,24 +77,18 @@ class AwesomeTableContainer extends React.Component<Props, State> {
         visibleCols={visibleCols}
         cols={cols}
         sortedRows={sortedRows}
-        onSortCol={this.updateColOrder}
-        onSortRow={this.sortRow}
+        onSortCol={updateColOrder}
+        onSortRow={sortRow}
       />
     );
   };
 
-  render() {
-    const { children } = this.props;
-
-    const renderProps = {
-      renderColumnToggle: this.renderColumnToggle,
-      renderTable: this.renderTable,
-      sortRow: this.sortRow,
-      toggleCol: this.toggleCol,
-    };
-
-    return children(renderProps);
-  }
-}
+  return children({
+    renderColumnToggle,
+    renderTable,
+    sortRow,
+    toggleCol,
+  });
+};
 
 export default AwesomeTableContainer;

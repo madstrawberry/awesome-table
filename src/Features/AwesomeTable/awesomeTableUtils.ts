@@ -1,8 +1,8 @@
 import { Row, SortOrder } from './awesomeTableModels';
 
 export const ascSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
-  let valueA = a[sortCol.name];
-  let valueB = b[sortCol.name];
+  let valueA = a.cols[sortCol.name];
+  let valueB = b.cols[sortCol.name];
 
   if (!valueA || !valueB) {
     return 0;
@@ -21,8 +21,8 @@ export const ascSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
 };
 
 export const descSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
-  let valueA = a[sortCol.name];
-  let valueB = b[sortCol.name];
+  let valueA = a.cols[sortCol.name];
+  let valueB = b.cols[sortCol.name];
 
   if (!valueA || !valueB) {
     return 0;

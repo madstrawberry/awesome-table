@@ -62,14 +62,23 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
       </TableHead>
       <TableBody>
         {sortedRows.map(row => (
-          <TableRow key={row.id}>
-            <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-              <Checkbox />
-            </TableCell>
-            {visibleCols.map(name => (
-              <TableCell key={`${row.id}-${name}`}>{renderCellContent(row[name])}</TableCell>
-            ))}
-          </TableRow>
+          <>
+            <TableRow key={row.id}>
+              <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
+                <Checkbox />
+              </TableCell>
+              {visibleCols.map(name => (
+                <TableCell key={`${row.id}-${name}`}>{renderCellContent(row.cols[name])}</TableCell>
+              ))}
+            </TableRow>
+            {!!row.detailsRow && (
+              <TableRow style={{ height: 'auto' }}>
+                <TableCell padding="none" colSpan={12} style={{ border: 0 }}>
+                  ss
+                </TableCell>
+              </TableRow>
+            )}
+          </>
         ))}
       </TableBody>
     </Table>

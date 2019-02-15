@@ -4,7 +4,10 @@ export interface Col {
 
 export interface Row {
   id: string | number;
-  [colName: string]: RowContent;
+  detailsRow?: string | JSX.Element;
+  cols: {
+    [colName: string]: RowContent;
+  };
 }
 
 export interface ColContent {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import AwesomeTableContainer from './Features/AwesomeTable/AwesomeTableContainer';
-import AwesomeTableContainer2 from './Features/AwesomeTable/AwesomeTableContainer2';
 import { Col, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
 import Toolbar from './Toolbar';
 import uuid from 'uuid';
@@ -14,7 +13,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <AwesomeTableContainer2 cols={cols} name="selectedFilters">
+        <AwesomeTableContainer cols={cols} name="selectedFilters">
           {({ renderColumnToggle, renderTable, sortRow, toggleCol }) => (
             <>
               <Toolbar renderColumnToggle={renderColumnToggle} />
@@ -23,7 +22,7 @@ class App extends Component {
               <button onClick={() => toggleCol('description')}>Toggle description</button>
             </>
           )}
-        </AwesomeTableContainer2>
+        </AwesomeTableContainer>
       </div>
     );
   }
@@ -46,12 +45,14 @@ const cols: AppCol = {
 function generateRows(data: Data[]): AppRow[] {
   return data.map(d => ({
     id: uuid(),
-    prodId: d.id,
-    name: {
-      sortString: d.type,
-      content: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
+    cols: {
+      prodId: d.id,
+      name: {
+        sortString: d.type,
+        content: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
+      },
+      description: d.description,
     },
-    description: d.description,
   }));
 }
 
@@ -69,9 +70,11 @@ export interface AppCol extends Col {
 }
 
 export interface AppRow extends Row {
-  prodId: RowContent;
-  name: RowContent;
-  description: RowContent;
+  cols: {
+    prodId: RowContent;
+    name: RowContent;
+    description: RowContent;
+  };
 }
 
 const mockData: Data[] = [
