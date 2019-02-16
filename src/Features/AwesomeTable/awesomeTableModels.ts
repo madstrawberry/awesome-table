@@ -2,18 +2,18 @@ export interface Cols {
   [colName: string]: ColContent;
 }
 
+export interface ColContent {
+  title: string;
+  disableToggle?: boolean;
+  disableSort?: boolean;
+}
+
 export interface Row {
   id: string | number;
   detailsRow?: string | JSX.Element;
   cols: {
     [colName: string]: RowContent;
   };
-}
-
-export interface ColContent {
-  title: string;
-  disableToggle?: boolean;
-  disableSort?: boolean;
 }
 
 export type RowContent = string | number | null | RowElementContent;
