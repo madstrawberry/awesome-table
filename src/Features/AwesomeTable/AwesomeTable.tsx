@@ -6,13 +6,13 @@ import TableHead from '@material-ui/core/TableHead';
 import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc';
 import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
-import { Row, Col, RowContent, SortOrder } from './awesomeTableModels';
+import { Row, Cols, RowContent, SortOrder } from './awesomeTableModels';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 interface Props {
   visibleCols: string[];
   sortedRows: Row[];
-  cols: Col;
+  cols: Cols;
   sortOrder: SortOrder | undefined;
   onSortCol: (newOrder: SortEnd) => void;
   onSortRow: (name: string) => void;

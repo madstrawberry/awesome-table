@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { arrayMove, SortEnd } from 'react-sortable-hoc';
 import { ascSort, descSort } from './awesomeTableUtils';
 import ColumnToggle from './ColumnToggle';
-import { AwesomeTableRenderProps, Row, Col, SortOrder } from './awesomeTableModels';
+import { AwesomeTableRenderProps, Row, Cols, SortOrder } from './awesomeTableModels';
 import AwesomeTable from './AwesomeTable';
 import useStateWithStorage from './hooks/useStateWithStorage';
 
 interface Props {
-  cols: Col;
+  cols: Cols;
   name: string;
   children: (renderProps: AwesomeTableRenderProps) => JSX.Element;
 }

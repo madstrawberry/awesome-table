@@ -2,12 +2,12 @@ import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Col } from './awesomeTableModels';
+import { Cols } from './awesomeTableModels';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 interface Props {
-  cols: Col;
+  cols: Cols;
   isColVisible: (col: string) => boolean;
   toggleCol: (col: string) => void;
 }

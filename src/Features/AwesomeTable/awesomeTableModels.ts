@@ -1,4 +1,4 @@
-export interface Col {
+export interface Cols {
   [colName: string]: ColContent;
 }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import AwesomeTableContainer from './Features/AwesomeTable/AwesomeTableContainer';
-import { Col, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
+import { Cols, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
 import Toolbar from './Toolbar';
 import uuid from 'uuid';
 
@@ -63,7 +63,7 @@ export interface Data {
   description: string;
 }
 
-export interface AppCol extends Col {
+export interface AppCol extends Cols {
   prodId: ColContent;
   name: ColContent;
   description: ColContent;
