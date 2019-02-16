@@ -3,7 +3,7 @@ export interface Cols {
 }
 
 export interface ColContent {
-  title: string;
+  content: string | number | null | JSX.Element;
   disableToggle?: boolean;
   disableSort?: boolean;
 }
@@ -20,7 +20,7 @@ export type RowContent = string | number | null | RowElementContent;
 
 export interface RowElementContent {
   sortString: string;
-  content: JSX.Element;
+  content: string | number | null | JSX.Element;
 }
 
 export interface AwesomeTableRenderProps {

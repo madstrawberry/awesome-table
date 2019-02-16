@@ -55,7 +55,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                   disabled={cols[name].disableSort}
                   onClick={() => onSortRow(name)}
                 >
-                  {cols[name].title}
+                  {cols[name].content}
                 </TableSortLabel>
               </>
             </SortableTableCell>

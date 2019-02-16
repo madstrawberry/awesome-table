@@ -52,7 +52,7 @@ class ColumnToggle extends React.Component<Props, State> {
               onClick={() => toggleCol(col)}
             >
               <Checkbox checked={isColVisible(col)} disabled={cols[col].disableToggle} />
-              {cols[col].title}
+              {cols[col].content}
             </MenuItem>
           ))}
         </Menu>
