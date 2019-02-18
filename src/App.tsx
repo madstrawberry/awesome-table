@@ -78,6 +78,7 @@ function generateRows(
         Toggle
       </button>
     ),
+    selectToggle: <Checkbox />,
     cols: {
       prodId: d.id,
       name: {

@@ -17,6 +17,7 @@ export interface Row {
   id: string | number;
   detailsRow?: string | JSX.Element;
   detailsToggle?: JSX.Element;
+  selectToggle?: JSX.Element;
   cols: {
     [colName: string]: RowContent;
   };
@@ -34,6 +35,7 @@ export interface RenderTableProps {
   rows: Row[];
   noResults?: RenderableElement;
   error?: RenderableElement;
+  bulkSelect?: JSX.Element;
 }
 
 export interface AwesomeTableRenderProps {

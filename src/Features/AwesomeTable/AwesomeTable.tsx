@@ -45,17 +45,21 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
   sortOrder,
   error,
   noResults,
+  bulkSelect,
 }) => {
   const hasDetailsView = rows.some(r => !!r.detailsRow);
+  const hasSelectToggle = rows.some(r => !!r.selectToggle);
   const colCount = visibleCols.length + (hasDetailsView ? 2 : 1); // Add for checkbox and details toggle
 
   return (
     <Table>
       <TableHead>
         <SortableRow axis="x" pressDelay={200} onSortEnd={onSortCol}>
-          <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-            <Checkbox />
-          </TableCell>
+          {hasSelectToggle && (
+            <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
+              {bulkSelect}
+            </TableCell>
+          )}
           {visibleCols.map((name, index) => {
             const col = cols[name];
             const SortableTableCell = getSortableTableCell(col.ColComponent);
@@ -82,9 +86,11 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
         {rows.map(row => (
           <React.Fragment key={row.id}>
             <TableRow>
-              <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-                <Checkbox />
-              </TableCell>
+              {hasSelectToggle && (
+                <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
+                  {row.selectToggle}
+                </TableCell>
+              )}
               {visibleCols.map(name => {
                 const { content, TableCellComponent } = getRowColContent(row.cols[name]);
 
