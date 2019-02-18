@@ -37,7 +37,8 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
   onSortRow,
   sortOrder,
 }) => {
-  const colCount = visibleCols.length + 1; // Add one for checkbox
+  const hasDetailsView = sortedRows.some(r => !!r.detailsRow);
+  const colCount = visibleCols.length + (hasDetailsView ? 2 : 1); // Add for checkbox and details toggle
 
   return (
     <Table>
@@ -60,18 +61,22 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
               </>
             </SortableTableCell>
           ))}
+          {hasDetailsView && <TableCell padding="dense" style={{ maxWidth: 0 }} />}
         </SortableRow>
       </TableHead>
       <TableBody>
         {sortedRows.map(row => (
-          <>
-            <TableRow key={row.id}>
+          <React.Fragment key={row.id}>
+            <TableRow>
               <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
                 <Checkbox />
               </TableCell>
               {visibleCols.map(name => (
                 <TableCell key={`${row.id}-${name}`}>{renderCellContent(row.cols[name])}</TableCell>
               ))}
+              {!!row.detailsRow && (
+                <TableCell key={`${row.id}-detailsView`}>{row.cols['detailsView']}</TableCell>
+              )}
             </TableRow>
             {!!row.detailsRow && (
               <TableRow style={{ height: 'auto' }}>
@@ -80,7 +85,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                 </TableCell>
               </TableRow>
             )}
-          </>
+          </React.Fragment>
         ))}
       </TableBody>
     </Table>
