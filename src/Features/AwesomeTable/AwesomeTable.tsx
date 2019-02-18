@@ -18,7 +18,10 @@ interface Props extends RenderTableProps {
 }
 
 const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
-const SortableTableCell = SortableElement((props: TableCellProps) => <TableCell {...props} />);
+const getSortableTableCell = (Comp: React.ComponentType<TableCellProps>) =>
+  SortableElement((props: TableCellProps) => <Comp {...props} />);
+
+const DefaultSortableTableCell = getSortableTableCell(TableCell);
 
 const renderCellContent = (val: RowContent) => {
   if (!val || typeof val !== 'object') {
@@ -48,20 +51,27 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
           <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
             <Checkbox />
           </TableCell>
-          {visibleCols.map((name, index) => (
-            <SortableTableCell index={index} key={name}>
-              <>
-                <TableSortLabel
-                  active={sortOrder && sortOrder.name === name}
-                  direction={!!sortOrder && sortOrder.sortAsc ? 'asc' : 'desc'}
-                  disabled={cols[name].disableSort}
-                  onClick={() => onSortRow(name)}
-                >
-                  {cols[name].content}
-                </TableSortLabel>
-              </>
-            </SortableTableCell>
-          ))}
+          {visibleCols.map((name, index) => {
+            const col = cols[name];
+            const SortableTableCell = col.ColComponent
+              ? getSortableTableCell(col.ColComponent)
+              : DefaultSortableTableCell;
+
+            return (
+              <SortableTableCell index={index} key={name}>
+                <>
+                  <TableSortLabel
+                    active={sortOrder && sortOrder.name === name}
+                    direction={!!sortOrder && sortOrder.sortAsc ? 'asc' : 'desc'}
+                    disabled={col.disableSort}
+                    onClick={() => onSortRow(name)}
+                  >
+                    {col.content}
+                  </TableSortLabel>
+                </>
+              </SortableTableCell>
+            );
+          })}
           {hasDetailsView && <TableCell padding="dense" style={{ maxWidth: 0 }} />}
         </SortableRow>
       </TableHead>
@@ -75,9 +85,9 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
               {visibleCols.map(name => (
                 <TableCell key={`${row.id}-${name}`}>{renderCellContent(row.cols[name])}</TableCell>
               ))}
-              {!!row.detailsRow && (
+              {!!row.detailsToggle && (
                 <TableCell padding="dense" key={`${row.id}-detailsView`}>
-                  {row.cols['detailsView']}
+                  {row.detailsToggle}
                 </TableCell>
               )}
             </TableRow>

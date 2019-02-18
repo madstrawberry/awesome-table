@@ -65,6 +65,19 @@ function generateRows(
         </span>
       </Collapse>
     ),
+    detailsToggle: (
+      <button
+        onClick={() =>
+          setDetailsView(
+            openDetailsViewIds.includes(d.id)
+              ? openDetailsViewIds.filter(o => o !== d.id)
+              : openDetailsViewIds.concat(d.id)
+          )
+        }
+      >
+        Toggle
+      </button>
+    ),
     cols: {
       prodId: d.id,
       name: {
@@ -72,19 +85,6 @@ function generateRows(
         content: <span style={{ color: 'pink' }}>{`${d.type} - ${d.title}`}</span>,
       },
       description: d.description,
-      detailsView: (
-        <button
-          onClick={() =>
-            setDetailsView(
-              openDetailsViewIds.includes(d.id)
-                ? openDetailsViewIds.filter(o => o !== d.id)
-                : openDetailsViewIds.concat(d.id)
-            )
-          }
-        >
-          Toggle
-        </button>
-      ),
     },
   }));
 }

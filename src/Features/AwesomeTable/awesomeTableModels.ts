@@ -1,3 +1,5 @@
+import { TableCellProps } from '@material-ui/core/TableCell';
+
 type RenderableElement = string | number | null | JSX.Element;
 
 export interface Cols {
@@ -8,11 +10,13 @@ export interface ColContent {
   content: RenderableElement;
   disableToggle?: boolean;
   disableSort?: boolean;
+  ColComponent?: React.ComponentType<TableCellProps>;
 }
 
 export interface Row {
   id: string | number;
   detailsRow?: string | JSX.Element;
+  detailsToggle?: JSX.Element;
   cols: {
     [colName: string]: RowContent;
   };
@@ -23,6 +27,7 @@ export type RowContent = string | number | null | RowElementContent;
 export interface RowElementContent {
   sortString: string;
   content: RenderableElement;
+  ColComponent?: React.ComponentType<TableCellProps>;
 }
 
 export interface RenderTableProps {
