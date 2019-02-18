@@ -20,15 +20,21 @@ interface Props extends RenderTableProps {
 const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
 const getSortableTableCell = (Comp: React.ComponentType<TableCellProps>) =>
   SortableElement((props: TableCellProps) => <Comp {...props} />);
-
 const DefaultSortableTableCell = getSortableTableCell(TableCell);
 
-const renderCellContent = (val: RowContent) => {
+const getRowColContent = (val: RowContent) => {
+  let content;
+  let TableCellComponent;
+
   if (!val || typeof val !== 'object') {
-    return val;
+    TableCellComponent = TableCell;
+    content = val;
+  } else {
+    TableCellComponent = val.ColComponent || TableCell;
+    content = val.content;
   }
 
-  return val.content;
+  return { content, TableCellComponent };
 };
 
 const AwesomeTable: React.FunctionComponent<Props> = ({
@@ -82,9 +88,11 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
               <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
                 <Checkbox />
               </TableCell>
-              {visibleCols.map(name => (
-                <TableCell key={`${row.id}-${name}`}>{renderCellContent(row.cols[name])}</TableCell>
-              ))}
+              {visibleCols.map(name => {
+                const { content, TableCellComponent } = getRowColContent(row.cols[name]);
+
+                return <TableCellComponent key={`${row.id}-${name}`}>{content}</TableCellComponent>;
+              })}
               {!!row.detailsToggle && (
                 <TableCell padding="dense" key={`${row.id}-detailsView`}>
                   {row.detailsToggle}
