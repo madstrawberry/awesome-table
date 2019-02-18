@@ -18,9 +18,8 @@ interface Props extends RenderTableProps {
 }
 
 const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...props} />);
-const getSortableTableCell = (Comp: React.ComponentType<TableCellProps>) =>
+const getSortableTableCell = (Comp: React.ComponentType<TableCellProps> = TableCell) =>
   SortableElement((props: TableCellProps) => <Comp {...props} />);
-const DefaultSortableTableCell = getSortableTableCell(TableCell);
 
 const getRowColContent = (val: RowContent) => {
   let content;
@@ -59,9 +58,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
           </TableCell>
           {visibleCols.map((name, index) => {
             const col = cols[name];
-            const SortableTableCell = col.ColComponent
-              ? getSortableTableCell(col.ColComponent)
-              : DefaultSortableTableCell;
+            const SortableTableCell = getSortableTableCell(col.ColComponent);
 
             return (
               <SortableTableCell index={index} key={name}>
