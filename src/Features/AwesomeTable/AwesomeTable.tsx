@@ -76,7 +76,9 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                 <TableCell key={`${row.id}-${name}`}>{renderCellContent(row.cols[name])}</TableCell>
               ))}
               {!!row.detailsRow && (
-                <TableCell key={`${row.id}-detailsView`}>{row.cols['detailsView']}</TableCell>
+                <TableCell padding="dense" key={`${row.id}-detailsView`}>
+                  {row.cols['detailsView']}
+                </TableCell>
               )}
             </TableRow>
             {!!row.detailsRow && (
