@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { arrayMove, SortEnd } from 'react-sortable-hoc';
 import { ascSort, descSort } from './awesomeTableUtils';
 import ColumnToggle from './ColumnToggle';
-import { AwesomeTableRenderProps, Row, Cols, SortOrder } from './awesomeTableModels';
+import {
+  AwesomeTableRenderProps,
+  Row,
+  Cols,
+  SortOrder,
+  RenderTableProps,
+} from './awesomeTableModels';
 import AwesomeTable from './AwesomeTable';
 import useStateWithStorage from './hooks/useStateWithStorage';
 
@@ -68,7 +74,7 @@ const AwesomeTableContainer: React.FunctionComponent<Props> = ({ cols, name, chi
     );
   };
 
-  const renderTable = (rows: Row[]) => {
+  const renderTable = ({ rows, ...rest }: RenderTableProps) => {
     const sortedRows = getSortedRows(rows);
 
     return (
@@ -76,9 +82,10 @@ const AwesomeTableContainer: React.FunctionComponent<Props> = ({ cols, name, chi
         sortOrder={sortOrder}
         visibleCols={visibleCols}
         cols={cols}
-        sortedRows={sortedRows}
+        rows={sortedRows}
         onSortCol={updateColOrder}
         onSortRow={sortRow}
+        {...rest}
       />
     );
   };

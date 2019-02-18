@@ -19,7 +19,7 @@ const App = () => {
         {({ renderColumnToggle, renderTable, sortRow, toggleCol }) => (
           <>
             <Toolbar renderColumnToggle={renderColumnToggle} />
-            {renderTable(rows)}
+            {renderTable({ rows, noResults: <span>No results</span> })}
             <button onClick={() => sortRow('description')}>I am an external sort</button>
             <button onClick={() => toggleCol('description')}>Toggle description</button>
             <button onClick={() => setOpenIds(openIds.length > 0 ? [] : ['72322'])}>
@@ -55,7 +55,14 @@ function generateRows(
     id: uuid(),
     detailsRow: (
       <Collapse in={openDetailsViewIds.includes(d.id)} unmountOnExit>
-        <span>{d.id}: text</span>
+        <span>
+          {d.id}: text <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          dsfsd
+        </span>
       </Collapse>
     ),
     cols: {

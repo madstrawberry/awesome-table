@@ -1,9 +1,11 @@
+type RenderableElement = string | number | null | JSX.Element;
+
 export interface Cols {
   [colName: string]: ColContent;
 }
 
 export interface ColContent {
-  content: string | number | null | JSX.Element;
+  content: RenderableElement;
   disableToggle?: boolean;
   disableSort?: boolean;
 }
@@ -20,12 +22,18 @@ export type RowContent = string | number | null | RowElementContent;
 
 export interface RowElementContent {
   sortString: string;
-  content: string | number | null | JSX.Element;
+  content: RenderableElement;
+}
+
+export interface RenderTableProps {
+  rows: Row[];
+  noResults?: RenderableElement;
+  error?: RenderableElement;
 }
 
 export interface AwesomeTableRenderProps {
   renderColumnToggle: () => JSX.Element;
-  renderTable: (rows: Row[]) => JSX.Element;
+  renderTable: (props: RenderTableProps) => JSX.Element;
   sortRow: (colName: string) => void;
   toggleCol: (colName: string) => void;
 }

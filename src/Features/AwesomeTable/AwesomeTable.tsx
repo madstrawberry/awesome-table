@@ -6,12 +6,11 @@ import TableHead from '@material-ui/core/TableHead';
 import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc';
 import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
-import { Row, Cols, RowContent, SortOrder } from './awesomeTableModels';
+import { Cols, RowContent, SortOrder, RenderTableProps, Row } from './awesomeTableModels';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 
-interface Props {
+interface Props extends RenderTableProps {
   visibleCols: string[];
-  sortedRows: Row[];
   cols: Cols;
   sortOrder: SortOrder | undefined;
   onSortCol: (newOrder: SortEnd) => void;
@@ -31,13 +30,15 @@ const renderCellContent = (val: RowContent) => {
 
 const AwesomeTable: React.FunctionComponent<Props> = ({
   visibleCols,
-  sortedRows,
+  rows,
   cols,
   onSortCol,
   onSortRow,
   sortOrder,
+  error,
+  noResults,
 }) => {
-  const hasDetailsView = sortedRows.some(r => !!r.detailsRow);
+  const hasDetailsView = rows.some(r => !!r.detailsRow);
   const colCount = visibleCols.length + (hasDetailsView ? 2 : 1); // Add for checkbox and details toggle
 
   return (
@@ -65,7 +66,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
         </SortableRow>
       </TableHead>
       <TableBody>
-        {sortedRows.map(row => (
+        {rows.map(row => (
           <React.Fragment key={row.id}>
             <TableRow>
               <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
@@ -83,6 +84,16 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                 <TableCell padding="none" colSpan={colCount} style={{ border: 0 }}>
                   {row.detailsRow}
                 </TableCell>
+              </TableRow>
+            )}
+            {!!error && (
+              <TableRow>
+                <TableCell colSpan={colCount}>{error}</TableCell>
+              </TableRow>
+            )}
+            {!rows.length && !error && !!noResults && (
+              <TableRow>
+                <TableCell colSpan={colCount}>{noResults}</TableCell>
               </TableRow>
             )}
           </React.Fragment>
