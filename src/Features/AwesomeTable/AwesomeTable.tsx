@@ -54,11 +54,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
     <Table>
       <TableHead>
         <SortableRow axis="x" pressDelay={200} onSortEnd={onSortCol}>
-          {hasSelectToggle && (
-            <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-              {bulkSelect}
-            </TableCell>
-          )}
+          {hasSelectToggle && <TableCell padding="checkbox">{bulkSelect}</TableCell>}
           {visibleCols.map((name, index) => {
             const col = cols[name];
             const SortableTableCell = getSortableTableCell(col.ColComponent);
@@ -85,11 +81,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
         {rows.map((row) => (
           <React.Fragment key={row.id}>
             <TableRow>
-              {hasSelectToggle && (
-                <TableCell padding="checkbox" style={{ maxWidth: 0 }}>
-                  {row.selectToggle}
-                </TableCell>
-              )}
+              {hasSelectToggle && <TableCell padding="checkbox">{row.selectToggle}</TableCell>}
               {visibleCols.map((name) => {
                 const { content, TableCellComponent } = getRowColContent(
                   row.cols[name],
