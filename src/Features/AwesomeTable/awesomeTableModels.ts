@@ -26,7 +26,7 @@ export interface Row {
 export type RowContent = string | number | null | RowElementContent;
 
 export interface RowElementContent {
-  sortString: string;
+  sortString: string | number;
   content: RenderableElement;
   ColComponent?: React.ComponentType<TableCellProps>;
 }
