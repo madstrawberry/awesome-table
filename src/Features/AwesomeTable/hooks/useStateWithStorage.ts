@@ -1,19 +1,19 @@
-import { LocalStorage } from '../awesomeTableUtils';
 import { useEffect, useState } from 'react';
+import { LocalStorage } from '../awesomeTableUtils';
 
 const useStateWithStorage = <T extends object | string>(content: T, key: string) => {
   const [savedContent, setSavedContent] = useState<T>(content);
 
-  const updateContent = (content: T) => {
-    LocalStorage.setItem(key, content);
-    setSavedContent(content);
+  const updateContent = (updatedContent: T) => {
+    LocalStorage.setItem(key, updatedContent);
+    setSavedContent(updatedContent);
   };
 
   const setInitialContent = () => {
     const currentSavedContent = LocalStorage.getItem<T>(key);
 
     if (Array.isArray(currentSavedContent) && Array.isArray(content)) {
-      if (currentSavedContent.every(colName => content.includes(colName))) {
+      if (currentSavedContent.every((colName) => content.includes(colName))) {
         updateContent(currentSavedContent);
       }
 

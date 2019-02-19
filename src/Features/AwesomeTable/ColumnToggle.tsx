@@ -1,10 +1,10 @@
-import React from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Checkbox from '@material-ui/core/Checkbox';
-import { Cols } from './awesomeTableModels';
-import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import React from 'react';
+import { Cols } from './awesomeTableModels';
 
 interface Props {
   cols: Cols;
@@ -17,11 +17,11 @@ interface State {
 }
 
 class ColumnToggle extends React.Component<Props, State> {
-  state: State = {
+  public state: State = {
     anchorEl: null,
   };
 
-  toggleModal = (anchorEl: HTMLElement | null) => {
+  private toggleModal = (anchorEl: HTMLElement | null) => {
     this.setState({ anchorEl });
   };
 
@@ -34,7 +34,7 @@ class ColumnToggle extends React.Component<Props, State> {
         <IconButton
           aria-owns={anchorEl ? 'toggle-columns' : undefined}
           aria-haspopup="true"
-          onClick={e => this.toggleModal(e.currentTarget)}
+          onClick={(e) => this.toggleModal(e.currentTarget)}
         >
           <MoreVertIcon />
         </IconButton>
@@ -44,7 +44,7 @@ class ColumnToggle extends React.Component<Props, State> {
           open={Boolean(anchorEl)}
           onClose={() => this.toggleModal(null)}
         >
-          {Object.keys(cols).map(col => (
+          {Object.keys(cols).map((col) => (
             <MenuItem
               style={{ paddingLeft: 0 }}
               key={col}

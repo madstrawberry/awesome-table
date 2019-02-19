@@ -1,10 +1,11 @@
+import Checkbox from '@material-ui/core/Checkbox';
+import Collapse from '@material-ui/core/Collapse';
 import React, { Component, useState } from 'react';
+import uuid from 'uuid';
 import './App.css';
 import AwesomeTableContainer from './Features/AwesomeTable/AwesomeTableContainer';
-import { Cols, Row, RowContent, ColContent } from './Features/AwesomeTable/awesomeTableModels';
+import { ColContent, Cols, Row, RowContent } from './Features/AwesomeTable/awesomeTableModels';
 import Toolbar from './Toolbar';
-import uuid from 'uuid';
-import Collapse from '@material-ui/core/Collapse';
 
 const App = () => {
   const data = mockData;
@@ -51,18 +52,18 @@ function generateRows(
   openDetailsViewIds: string[],
   setDetailsView: (id: string[]) => void
 ): AppRow[] {
-  return data.map(d => ({
+  return data.map((d) => ({
     id: uuid(),
     detailsRow: (
       <Collapse in={openDetailsViewIds.includes(d.id)} unmountOnExit>
-        <span>
+        <div>
           {d.id}: text <br />
           <br />
           <br />
           <br />
           <br />
           dsfsd
-        </span>
+        </div>
       </Collapse>
     ),
     detailsToggle: (
@@ -70,7 +71,7 @@ function generateRows(
         onClick={() =>
           setDetailsView(
             openDetailsViewIds.includes(d.id)
-              ? openDetailsViewIds.filter(o => o !== d.id)
+              ? openDetailsViewIds.filter((o) => o !== d.id)
               : openDetailsViewIds.concat(d.id)
           )
         }

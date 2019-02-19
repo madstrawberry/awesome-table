@@ -1,13 +1,12 @@
-import React from 'react';
-import Checkbox from '@material-ui/core/Checkbox';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc';
-import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
-import { Cols, RowContent, SortOrder, RenderTableProps, Row } from './awesomeTableModels';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import React from 'react';
+import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc';
+import { Cols, RenderTableProps, Row, RowContent, SortOrder } from './awesomeTableModels';
 
 interface Props extends RenderTableProps {
   visibleCols: string[];
@@ -47,8 +46,8 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
   noResults,
   bulkSelect,
 }) => {
-  const hasDetailsView = rows.some(r => !!r.detailsRow);
-  const hasSelectToggle = rows.some(r => !!r.selectToggle);
+  const hasDetailsView = rows.some((r) => !!r.detailsRow);
+  const hasSelectToggle = rows.some((r) => !!r.selectToggle);
   const colCount = visibleCols.length + (hasDetailsView ? 2 : 1); // Add for checkbox and details toggle
 
   return (
@@ -83,7 +82,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
         </SortableRow>
       </TableHead>
       <TableBody>
-        {rows.map(row => (
+        {rows.map((row) => (
           <React.Fragment key={row.id}>
             <TableRow>
               {hasSelectToggle && (
@@ -91,7 +90,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                   {row.selectToggle}
                 </TableCell>
               )}
-              {visibleCols.map(name => {
+              {visibleCols.map((name) => {
                 const { content, TableCellComponent } = getRowColContent(row.cols[name]);
 
                 return <TableCellComponent key={`${row.id}-${name}`}>{content}</TableCellComponent>;

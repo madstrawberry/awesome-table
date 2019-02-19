@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { arrayMove, SortEnd } from 'react-sortable-hoc';
-import { ascSort, descSort } from './awesomeTableUtils';
-import ColumnToggle from './ColumnToggle';
+import AwesomeTable from './AwesomeTable';
 import {
   AwesomeTableRenderProps,
-  Row,
   Cols,
-  SortOrder,
   RenderTableProps,
+  Row,
+  SortOrder,
 } from './awesomeTableModels';
-import AwesomeTable from './AwesomeTable';
+import { ascSort, descSort } from './awesomeTableUtils';
+import ColumnToggle from './ColumnToggle';
 import useStateWithStorage from './hooks/useStateWithStorage';
 
 interface Props {
@@ -37,7 +37,7 @@ const AwesomeTableContainer: React.FunctionComponent<Props> = ({ cols, name, chi
     if (!isToggled) {
       updatedVisibleCols = visibleCols.concat(colNameToRemove);
     } else {
-      updatedVisibleCols = visibleCols.filter(name => name !== colNameToRemove);
+      updatedVisibleCols = visibleCols.filter((colName) => colName !== colNameToRemove);
     }
 
     setVisibleCols(updatedVisibleCols);
@@ -68,7 +68,7 @@ const AwesomeTableContainer: React.FunctionComponent<Props> = ({ cols, name, chi
     return (
       <ColumnToggle
         cols={cols}
-        isColVisible={col => visibleCols.includes(col)}
+        isColVisible={(col) => visibleCols.includes(col)}
         toggleCol={toggleCol}
       />
     );
