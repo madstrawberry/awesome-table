@@ -11,6 +11,9 @@ export const ascSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
   valueA = typeof valueA !== 'object' ? valueA : valueA.sortString;
   valueB = typeof valueB !== 'object' ? valueB : valueB.sortString;
 
+  valueA = typeof valueA === 'string' ? valueA.toLowerCase() : valueA;
+  valueB = typeof valueB === 'string' ? valueB.toLowerCase() : valueB;
+
   if (valueA < valueB) {
     return -1;
   }
@@ -30,6 +33,9 @@ export const descSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
 
   valueA = typeof valueA !== 'object' ? valueA : valueA.sortString;
   valueB = typeof valueB !== 'object' ? valueB : valueB.sortString;
+
+  valueA = typeof valueA === 'string' ? valueA.toLowerCase() : valueA;
+  valueB = typeof valueB === 'string' ? valueB.toLowerCase() : valueB;
 
   if (valueA > valueB) {
     return -1;
