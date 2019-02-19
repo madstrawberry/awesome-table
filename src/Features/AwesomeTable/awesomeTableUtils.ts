@@ -1,19 +1,24 @@
-import { Row, SortOrder } from './awesomeTableModels';
+import { Row, RowContent, SortOrder } from './awesomeTableModels';
+
+const getValue = (rowContent: RowContent) => {
+  if (!rowContent) {
+    return 0;
+  }
+
+  let value;
+  value = typeof rowContent !== 'object' ? rowContent : rowContent.sortString;
+  value = typeof value === 'string' ? value.toLowerCase() : value;
+
+  return value;
+};
 
 export const ascSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
-  let valueA = a.cols[sortCol.name];
-  let valueB = b.cols[sortCol.name];
+  const valueA = getValue(a.cols[sortCol.name]);
+  const valueB = getValue(b.cols[sortCol.name]);
 
   if (!valueA || !valueB) {
     return 0;
   }
-
-  valueA = typeof valueA !== 'object' ? valueA : valueA.sortString;
-  valueB = typeof valueB !== 'object' ? valueB : valueB.sortString;
-
-  valueA = typeof valueA === 'string' ? valueA.toLowerCase() : valueA;
-  valueB = typeof valueB === 'string' ? valueB.toLowerCase() : valueB;
-
   if (valueA < valueB) {
     return -1;
   }
@@ -24,19 +29,12 @@ export const ascSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
 };
 
 export const descSort = (sortCol: SortOrder) => (a: Row, b: Row) => {
-  let valueA = a.cols[sortCol.name];
-  let valueB = b.cols[sortCol.name];
+  const valueA = getValue(a.cols[sortCol.name]);
+  const valueB = getValue(b.cols[sortCol.name]);
 
   if (!valueA || !valueB) {
     return 0;
   }
-
-  valueA = typeof valueA !== 'object' ? valueA : valueA.sortString;
-  valueB = typeof valueB !== 'object' ? valueB : valueB.sortString;
-
-  valueA = typeof valueA === 'string' ? valueA.toLowerCase() : valueA;
-  valueB = typeof valueB === 'string' ? valueB.toLowerCase() : valueB;
-
   if (valueA > valueB) {
     return -1;
   }
