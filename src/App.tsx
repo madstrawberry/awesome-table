@@ -2,11 +2,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Collapse from '@material-ui/core/Collapse';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
 import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import uuid from 'uuid';
 import './App.css';
-import AwesomeTableContainer from './Features/AwesomeTable/AwesomeTableContainer';
-import { ColContent, Cols, Row, RowContent } from './Features/AwesomeTable/awesomeTableModels';
+import AwesomeTable, { ColContent, Cols, Row, RowContent } from './Features/AwesomeTable';
 import Toolbar from './Toolbar';
 
 const App = () => {
@@ -18,7 +17,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <AwesomeTableContainer cols={cols} name="selectedFilters">
+      <AwesomeTable cols={cols} name="selectedFilters">
         {({ renderColumnToggle, renderTable, sortRow, toggleCol }) => (
           <>
             <Toolbar renderColumnToggle={renderColumnToggle} />
@@ -34,7 +33,7 @@ const App = () => {
             </button>
           </>
         )}
-      </AwesomeTableContainer>
+      </AwesomeTable>
     </div>
   );
 };
