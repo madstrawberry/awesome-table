@@ -81,7 +81,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
       <TableBody>
         {rows.map((row) => (
           <React.Fragment key={row.id}>
-            <TableBodyRowComponent isRowSelected={row.isRowSelected}>
+            <TableBodyRowComponent isRowSelected={row.isRowSelected} isRowActive={row.isRowActive}>
               {hasSelectToggle && <TableCell padding="checkbox">{row.selectToggle}</TableCell>}
               {visibleCols.map((name) => {
                 const { content, TableCellComponent } = getRowColContent(

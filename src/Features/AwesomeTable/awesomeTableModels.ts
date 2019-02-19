@@ -20,6 +20,7 @@ export interface Row {
   detailsToggle?: JSX.Element;
   selectToggle?: JSX.Element;
   isRowSelected?: boolean;
+  isRowActive?: boolean;
   cols: {
     [colName: string]: RowContent;
   };
@@ -33,12 +34,17 @@ export interface RowElementContent {
   ColComponent?: React.ComponentType<TableCellProps>;
 }
 
+export interface AdditionalTableRowProps {
+  isRowSelected?: boolean;
+  isRowActive?: boolean;
+}
+
 export interface RenderTableProps {
   rows: Row[];
   noResults?: RenderableElement;
   error?: RenderableElement;
   bulkSelect?: JSX.Element;
-  TableBodyRowComponent: React.ComponentType<TableRowProps & { isRowSelected?: boolean }>;
+  TableBodyRowComponent: React.ComponentType<TableRowProps & AdditionalTableRowProps>;
 }
 
 export interface AwesomeTableRenderProps {

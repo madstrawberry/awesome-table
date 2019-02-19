@@ -5,7 +5,13 @@ import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import React, { useState } from 'react';
 import uuid from 'uuid';
 import './App.css';
-import AwesomeTable, { ColContent, Cols, Row, RowContent } from './Features/AwesomeTable';
+import AwesomeTable, {
+  AdditionalTableRowProps,
+  ColContent,
+  Cols,
+  Row,
+  RowContent,
+} from './Features/AwesomeTable';
 import Toolbar from './Toolbar';
 
 const App = () => {
@@ -42,7 +48,7 @@ const FancyTableCell = (props: TableCellProps) => (
   <TableCell {...props} style={{ background: '#f1f1f1' }} />
 );
 
-const FancyTableRow = ({ isRowSelected, ...rest }: TableRowProps & { isRowSelected?: boolean }) => (
+const FancyTableRow = ({ isRowSelected, ...rest }: TableRowProps & AdditionalTableRowProps) => (
   <TableRow {...rest} style={{ background: isRowSelected ? 'pink' : '#f1f1f1' }} />
 );
 
