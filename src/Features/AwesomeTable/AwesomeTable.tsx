@@ -45,6 +45,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
   error,
   noResults,
   bulkSelect,
+  TableBodyRowComponent,
 }) => {
   const hasDetailsView = rows.some((r) => !!r.detailsRow);
   const hasSelectToggle = rows.some((r) => !!r.selectToggle);
@@ -80,7 +81,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
       <TableBody>
         {rows.map((row) => (
           <React.Fragment key={row.id}>
-            <TableRow>
+            <TableBodyRowComponent isRowSelected={row.isRowSelected}>
               {hasSelectToggle && <TableCell padding="checkbox">{row.selectToggle}</TableCell>}
               {visibleCols.map((name) => {
                 const { content, TableCellComponent } = getRowColContent(
@@ -95,7 +96,7 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                   {row.detailsToggle}
                 </TableCell>
               )}
-            </TableRow>
+            </TableBodyRowComponent>
             {!!row.detailsRow && (
               <TableRow style={{ height: 'auto' }}>
                 <TableCell padding="none" colSpan={colCount} style={{ border: 0 }}>
@@ -103,18 +104,18 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                 </TableCell>
               </TableRow>
             )}
-            {!!error && (
-              <TableRow>
-                <TableCell colSpan={colCount}>{error}</TableCell>
-              </TableRow>
-            )}
-            {!rows.length && !error && !!noResults && (
-              <TableRow>
-                <TableCell colSpan={colCount}>{noResults}</TableCell>
-              </TableRow>
-            )}
           </React.Fragment>
         ))}
+        {!!error && (
+          <TableRow>
+            <TableCell colSpan={colCount}>{error}</TableCell>
+          </TableRow>
+        )}
+        {rows.length === 0 && !error && !!noResults && (
+          <TableRow>
+            <TableCell colSpan={colCount}>{noResults}</TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

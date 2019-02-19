@@ -1,6 +1,7 @@
 import Checkbox from '@material-ui/core/Checkbox';
 import Collapse from '@material-ui/core/Collapse';
 import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
+import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import React, { Component, useState } from 'react';
 import uuid from 'uuid';
 import './App.css';
@@ -21,7 +22,11 @@ const App = () => {
         {({ renderColumnToggle, renderTable, sortRow, toggleCol }) => (
           <>
             <Toolbar renderColumnToggle={renderColumnToggle} />
-            {renderTable({ rows, noResults: <span>No results</span> })}
+            {renderTable({
+              rows,
+              noResults: <span>No results</span>,
+              TableBodyRowComponent: FancyTableRow,
+            })}
             <button onClick={() => sortRow('description')}>I am an external sort</button>
             <button onClick={() => toggleCol('description')}>Toggle description</button>
             <button onClick={() => setOpenIds(openIds.length > 0 ? [] : ['72322'])}>
@@ -36,6 +41,10 @@ const App = () => {
 
 const FancyTableCell = (props: TableCellProps) => (
   <TableCell {...props} style={{ background: '#f1f1f1' }} />
+);
+
+const FancyTableRow = ({ isRowSelected, ...rest }: TableRowProps & { isRowSelected?: boolean }) => (
+  <TableRow {...rest} style={{ background: isRowSelected ? 'pink' : '#f1f1f1' }} />
 );
 
 const cols: AppCol = {
@@ -62,6 +71,7 @@ function generateRows(
 ): AppRow[] {
   return data.map((d) => ({
     id: uuid(),
+    isRowSelected: d.id === '72322' ? true : false,
     detailsRow: (
       <Collapse in={openDetailsViewIds.includes(d.id)} unmountOnExit>
         <div>

@@ -1,4 +1,5 @@
 import { TableCellProps } from '@material-ui/core/TableCell';
+import { TableRowProps } from '@material-ui/core/TableRow';
 
 type RenderableElement = string | number | null | JSX.Element;
 
@@ -18,6 +19,7 @@ export interface Row {
   detailsRow?: string | JSX.Element;
   detailsToggle?: JSX.Element;
   selectToggle?: JSX.Element;
+  isRowSelected?: boolean;
   cols: {
     [colName: string]: RowContent;
   };
@@ -36,6 +38,7 @@ export interface RenderTableProps {
   noResults?: RenderableElement;
   error?: RenderableElement;
   bulkSelect?: JSX.Element;
+  TableBodyRowComponent: React.ComponentType<TableRowProps & { isRowSelected?: boolean }>;
 }
 
 export interface AwesomeTableRenderProps {
