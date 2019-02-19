@@ -10,7 +10,7 @@ export interface ColContent {
   content: RenderableElement;
   disableToggle?: boolean;
   disableSort?: boolean;
-  ColComponent?: React.ComponentType<TableCellProps>;
+  ColComponent: React.ComponentType<TableCellProps>;
 }
 
 export interface Row {

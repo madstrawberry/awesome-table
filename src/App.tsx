@@ -1,5 +1,6 @@
 import Checkbox from '@material-ui/core/Checkbox';
 import Collapse from '@material-ui/core/Collapse';
+import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
 import React, { Component, useState } from 'react';
 import uuid from 'uuid';
 import './App.css';
@@ -33,17 +34,24 @@ const App = () => {
   );
 };
 
+const FancyTableCell = (props: TableCellProps) => (
+  <TableCell {...props} style={{ background: '#f1f1f1' }} />
+);
+
 const cols: AppCol = {
   prodId: {
     content: 'ID',
+    ColComponent: FancyTableCell,
   },
   name: {
     content: 'Name',
     disableToggle: true,
+    ColComponent: TableCell,
   },
   description: {
     content: 'Description',
     disableSort: true,
+    ColComponent: TableCell,
   },
 };
 

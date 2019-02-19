@@ -6,7 +6,7 @@ import TableRow, { TableRowProps } from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import React from 'react';
 import { SortableContainer, SortableElement, SortEnd } from 'react-sortable-hoc';
-import { Cols, RenderTableProps, Row, RowContent, SortOrder } from './awesomeTableModels';
+import { ColContent, Cols, RenderTableProps, RowContent, SortOrder } from './awesomeTableModels';
 
 interface Props extends RenderTableProps {
   visibleCols: string[];
@@ -20,16 +20,16 @@ const SortableRow = SortableContainer((props: TableRowProps) => <TableRow {...pr
 const getSortableTableCell = (Comp: React.ComponentType<TableCellProps> = TableCell) =>
   SortableElement((props: TableCellProps) => <Comp {...props} />);
 
-const getRowColContent = (val: RowContent) => {
+const getRowColContent = (rowContent: RowContent, colContent: ColContent) => {
   let content;
   let TableCellComponent;
 
-  if (!val || typeof val !== 'object') {
-    TableCellComponent = TableCell;
-    content = val;
+  if (!rowContent || typeof rowContent !== 'object') {
+    TableCellComponent = colContent.ColComponent;
+    content = rowContent;
   } else {
-    TableCellComponent = val.ColComponent || TableCell;
-    content = val.content;
+    TableCellComponent = rowContent.ColComponent || colContent.ColComponent;
+    content = rowContent.content;
   }
 
   return { content, TableCellComponent };
@@ -91,7 +91,10 @@ const AwesomeTable: React.FunctionComponent<Props> = ({
                 </TableCell>
               )}
               {visibleCols.map((name) => {
-                const { content, TableCellComponent } = getRowColContent(row.cols[name]);
+                const { content, TableCellComponent } = getRowColContent(
+                  row.cols[name],
+                  cols[name]
+                );
 
                 return <TableCellComponent key={`${row.id}-${name}`}>{content}</TableCellComponent>;
               })}
