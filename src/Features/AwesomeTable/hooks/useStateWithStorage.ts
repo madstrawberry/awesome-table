@@ -27,6 +27,10 @@ const useStateWithStorage = <T extends object | string>(content: T, key: string)
     setInitialContent();
   }, []);
 
+  useEffect(() => {
+    setInitialContent();
+  }, [key]);
+
   return [savedContent, updateContent] as [typeof savedContent, typeof updateContent];
 };
 
